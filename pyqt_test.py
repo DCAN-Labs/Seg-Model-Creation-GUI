@@ -12,8 +12,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer, Qt
 import PyQt5_stylesheets
 from custom_widgets import *
-        
-# TODO: Change path inputs to os.path.join and remove slashes from end of line inputs
 
 class Thread(QtCore.QThread):
     finished = pyqtSignal()
@@ -46,7 +44,7 @@ class Thread(QtCore.QThread):
         self.distribution = distribution
         self.synth_amt = synth_amt
         self.script_dir = script_dir
-        self.check_list=check_list
+        self.check_list = check_list
 
     def cancel_jobs(self):
         # Uses active jobs file to cancel al job ids listedF
@@ -89,9 +87,7 @@ class Thread(QtCore.QThread):
                     child.kill()
             except:
                 pass
-            parent.kill()    
-            
-        
+            parent.kill()        
 
 class Window(QtWidgets.QMainWindow, Ui_MainWindow):
     temp_thread = None
@@ -197,6 +193,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 if self.check_inputs():
                     self.menuiuhwuaibfa.setTitle("Running...")
                     self.check_status()
+                    running_tasks.append*
                     # Start new worker thread to run main program. Allows UI to continue working along with it
                     self.temp_thread = Thread(Path(self.line_dcan_path.text().strip()), Path(self.line_task_path.text().strip()), Path(self.line_synth_path.text().strip()), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
                                             self.line_modality.text().strip().lower(), self.line_task_number.text().strip(), self.line_distribution.text().strip().lower(), self.line_synth_img_amt.text().strip(), self.script_dir, str(self.check_list))
@@ -444,6 +441,7 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
         self.setStyleSheet(f"QMainWindow {{background-image: url({image_path}); background-repeat: no-repeat; background-position: center;}}")
 
 def main(): 
+    
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Windows')
     # app.setStyleSheet(PyQt5_stylesheets.load_stylesheet_pyqt5(style="style_Dark"))
