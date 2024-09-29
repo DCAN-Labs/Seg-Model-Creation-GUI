@@ -5,13 +5,15 @@ import subprocess
 import psutil
 from pathlib import Path
 
-from test1 import Ui_MainWindow
-from k_login import Ui_LoginWindow
+from gui_scripts import Ui_MainWindow
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 from PyQt5.QtCore import QObject, QThread, pyqtSignal, QTimer, Qt
 import PyQt5_stylesheets
 from custom_widgets import *
+        
+# TODO: Change path inputs to os.path.join and remove slashes from end of line inputs
 
 class Thread(QtCore.QThread):
     finished = pyqtSignal()
@@ -31,7 +33,7 @@ class Thread(QtCore.QThread):
 
     quit_program = False
 
-    def __init__(self, dcan_path, task_path, synth_path, raw_path, results_path, trained_path, modality, task_num, distribution, synth_amt, script_dir, check_list):
+    def __init__(self, dcan_path, task_path, synth_path, raw_path, results_path, trained_path, task_num,  synth_amt, script_dir,modality,  distribution,check_list):
         QtCore.QThread.__init__(self)
         self.dcan_path = dcan_path
         self.task_path = task_path
@@ -44,7 +46,7 @@ class Thread(QtCore.QThread):
         self.distribution = distribution
         self.synth_amt = synth_amt
         self.script_dir = script_dir
-        self.check_list = check_list
+        self.check_list=check_list
 
     def cancel_jobs(self):
         # Uses active jobs file to cancel al job ids listedF
@@ -59,7 +61,7 @@ class Thread(QtCore.QThread):
 
     def run(self):
         # Start subprocess and wait for it to finish
-        p = subprocess.Popen(["python", os.path.join(self.script_dir, "automation_test.py"), self.dcan_path, self.task_path, self.synth_path, self.raw_path, self.results_path, self.trained_path, self.modality, self.task_num, self.distribution, self.synth_amt, self.check_list], stdout=None, stderr=None) 
+        p = subprocess.Popen(["python", os.path.join(self.script_dir, "automation_scripts.py"), self.dcan_path, self.task_path, self.synth_path, self.raw_path, self.results_path, self.trained_path, self.modality, self.task_num, self.distribution, self.synth_amt, self.check_list], stdout=None, stderr=None) 
         self.processes.append(p)
         p.wait()
               
@@ -87,7 +89,9 @@ class Thread(QtCore.QThread):
                     child.kill()
             except:
                 pass
-            parent.kill()        
+            parent.kill()    
+            
+        
 
 class Window(QtWidgets.QMainWindow, Ui_MainWindow):
     temp_thread = None
@@ -95,6 +99,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
     script_dir = ''
     t_num = ''
     running = False
+
     
     def __init__(self):
         super().__init__()
@@ -126,13 +131,12 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.inputDict['synth_path'] = self.line_synth_path
         self.inputDict['task_path'] = self.line_task_path
         self.inputDict['raw_data_base_path'] = self.line_raw_data_base_path
-        self.inputDict['modality'] = self.line_modality
         self.inputDict['task_number'] = self.line_task_number
-        self.inputDict['distribution'] = self.line_distribution
         self.inputDict['synth_img_amt'] = self.line_synth_img_amt
         self.inputDict['results_path'] = self.line_results_path
         self.inputDict['trained_models_path'] = self.line_trained_models_path
-        
+        self.inputDict['modality'] = self.GroupBox_Check(0)
+        self.inputDict['distribution'] = self.GroupBox_Check(1)
         self.check_list = []
         
         # Some setup stuff
@@ -149,6 +153,8 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.button_browse_2.clicked.connect(lambda: self.browse(2))
         self.button_browse_3.clicked.connect(lambda: self.browse(3))
         self.button_browse_4.clicked.connect(lambda: self.browse(4))
+        self.button_browse_5.clicked.connect(lambda: self.browse(5))
+        self.button_browse_6.clicked.connect(lambda: self.browse(6))
     
     def findAlphabeticalIndex(self, combo, item):
         # Used to help add items to comboboxes in alphabetical order
@@ -165,17 +171,15 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         inp_raw_data_base_path = os.path.exists(Path(self.line_raw_data_base_path.text().strip()))
         inp_results_path= os.path.exists(Path(self.line_results_path.text().strip()))
         inp_trained_models_path = os.path.exists(Path(self.line_trained_models_path.text().strip()))
-        inp_modality = self.line_modality.text().strip().lower() == "t1" or self.line_modality.text().strip().lower() == "t2" or self.line_modality.text().strip().lower() == "t1t2"
-        # TODO: update task number check
+        inp_modality = True
         inp_task_number = self.line_task_number.text().isdigit()
-        inp_distribution = self.line_distribution.text().strip().lower() == "uniform" or self.line_distribution.text().strip().lower() == "normal"
-        inp_synth_img_amt = self.line_synth_img_amt.text().strip().isdigit()
+        inp_distribution = True
         
         tasks_match = True
         if inp_task_number and inp_task_path:
             tasks_match = os.path.split(Path(self.line_task_path.text().strip()))[-1] == f'Task{self.line_task_number.text().strip()}'
         
-        arguments = [inp_dcan_path, inp_synth_path, inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_synth_img_amt, inp_results_path, inp_trained_models_path, tasks_match] 
+        arguments = [inp_dcan_path, inp_synth_path, inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_results_path, inp_trained_models_path, tasks_match] 
         
         if all(i == True for i in arguments):
             return True
@@ -186,18 +190,18 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # If process isn't currently running
         if self.running == False:
             # Make sure all inputs are filled
-            if any(inp.text() == "" for inp in self.inputDict.values()):
+            values= list(self.inputDict.values())
+            print(values[:-2])
+            if any(inp.text() == "" for inp in values[:-2]) and (self.inputDict['modality']=='0' or self.inputDict['distribution']=='0'):
                 print("Please fill out all input fields")
                 self.menuiuhwuaibfa.setTitle("Please fill out all input fields")
             else:
                 if self.check_inputs():
                     self.menuiuhwuaibfa.setTitle("Running...")
                     self.check_status()
-                    running_tasks.append*
                     # Start new worker thread to run main program. Allows UI to continue working along with it
                     self.temp_thread = Thread(Path(self.line_dcan_path.text().strip()), Path(self.line_task_path.text().strip()), Path(self.line_synth_path.text().strip()), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
-                                            self.line_modality.text().strip().lower(), self.line_task_number.text().strip(), self.line_distribution.text().strip().lower(), self.line_synth_img_amt.text().strip(), self.script_dir, str(self.check_list))
-                    #self.temp_thread.finished.connect(lambda: self.pushButton.setText('run')) # Listen for when process finishes
+                                             self.line_task_number.text().strip(), self.line_synth_img_amt.text().strip(), self.script_dir,self.GroupBox_Check(0), self.GroupBox_Check(1), str(self.check_list))
                     self.temp_thread.finished.connect(self.on_finish_thread) # Listen for when process finishes
                     self.temp_thread.start()
                     self.running = True
@@ -209,14 +213,33 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         elif self.running == True:
             self.menuiuhwuaibfa.setTitle("Program Stopped")
             self.temp_thread.stop_program() # Stops subrocesses within thread. This will cause the finish signal to be sent
-            
+    def GroupBox_Check(self,num):
+        #checks which is checked and returns the value
+        if num==0: #modality
+            if self.radio_t1.isChecked():
+                return 't1'
+            elif self.radio_t2.isChecked():
+                return 't2'
+            elif self.radio_t1t2.isChecked():
+                return 't1t2'
+            else:
+                return '0'
+        else:
+            if self.radio_normal.isChecked():
+                return 'normal'
+            elif self.radio_uniform.isChecked():
+                return 'uniform'
+            else:
+                return '0'
     def browse(self,num):
     # Files browser
         path_dic = {
-    1: (self.line_dcan_path, os.path.expanduser("~")),
+    1: (self.line_dcan_path, "/"),
     2: (self.line_task_path, "/"),
-    3: (self.line_synth_path, os.path.expanduser("~")),
-    4: (self.line_raw_data_base_path, "/")
+    3: (self.line_synth_path, "/"),
+    4: (self.line_raw_data_base_path, "/"),
+    5: (self.line_results_path,"/"),
+    6: (self.line_trained_models_path, "/")
         }
 
         line_edit,default_path=path_dic.get(num)
@@ -225,7 +248,6 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
 
         if dialog:
             line_edit.setText(str(dialog))
-        
     def check_status(self):  
         # Updates a list showing which steps the user wants to run  
         for checkBox in self.checkBoxes:
@@ -258,7 +280,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 f = open(os.path.join(self.script_dir, "automation_presets", f"{self.comboBox_preset.currentText().strip()}.config"))
                 lines = [line for line in f.readlines() if line.strip()] # Ignore blank lines
 
-                for line in lines:
+                for line in lines[:-2]:
                     line = line.strip().split('=')
                     if line[0] in self.inputDict.keys():
                         # If there is no info associated with a certain input, clear the input line
@@ -266,6 +288,16 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                             self.inputDict[line[0]].clear() 
                         elif len(line) == 2:
                             self.inputDict[line[0]].setText(line[1])
+                for i, line in enumerate(lines[-2:], start=0):
+                    line = line.strip().split('=')
+                    if line[0] in self.inputDict.keys():
+                        if len(line)==1:
+                            self.inputDict[line[0]].clear() 
+                        elif len(line) == 2:
+                            radio_button = getattr(self, f'radio_{line[1]}')  # Access the radio button dynamically
+                            radio_button.setChecked(True)
+                
+                
                             
                 f.close()
                 print("Preset Loaded")
@@ -278,7 +310,9 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # Saves preset data to a file
         if self.line_save_preset.text().strip() == "":
             return
-        if all(inp.text().strip() == "" for inp in self.inputDict.values()):
+        values = list(self.inputDict.values())
+        if all(inp.text().strip() == "" for inp in values[:-2]) or (self.GroupBox_Check(0)=='0' or self.GroupBox_Check(0)=='0'):
+    
             print("Please fill out at least one input")
             self.menuiuhwuaibfa.setTitle("Please fill out at least one input")
             return
@@ -291,8 +325,11 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # Make sure file doesn't exist yet and create presets data
         if not os.path.isfile(os.path.join(self.script_dir, "automation_presets", f"{self.line_save_preset.text().strip()}.config")):
             f = open(os.path.join(self.script_dir, "automation_presets", f"{self.line_save_preset.text().strip()}.config"), "w")
-            for key, val in self.inputDict.items():
+            for key, val in list(self.inputDict.items())[:-2]:
+              
                 f.write(f"{key}={val.text().strip()}\n")
+            for i, (key, val) in enumerate(list(self.inputDict.items())[-2:], start=0):
+                    f.write(f"{key}={self.GroupBox_Check(i)}\n")
             f.close()
             
             self.comboBox_preset.setStyleSheet("")
@@ -307,12 +344,12 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             
             self.comboBox_remove_preset.setStyleSheet("")
             self.comboBox_remove_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_remove_preset, self.line_save_preset.text().strip()), self.line_save_preset.text().strip())
-            #self.comboBox_remove_preset.setCurrentIndex(self.comboBox_remove_preset.findText(self.line_save_preset.text().strip()))
+          
             self.comboBox_remove_preset.setEditable(True)
             self.comboBox_remove_preset.lineEdit().setPlaceholderText('-- Select Preset --')
             self.comboBox_remove_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
             self.comboBox_remove_preset.setInsertPolicy(QComboBox.NoInsert)
-            #self.comboBox_preset.setCurrentIndex(-1)
+        
             if self.comboBox_remove_preset.currentText().strip() != '':
                 self.comboBox_remove_preset.setCurrentIndex(-1)
             
@@ -326,7 +363,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.menuiuhwuaibfa.setTitle("File Already Exists")
             
     def remove_preset(self, event):
-        # Delete file if it exists
+        # Delete file if it exists.
         if self.comboBox_remove_preset.currentIndex()>=0:
             if os.path.isfile(os.path.join(self.script_dir, "automation_presets", f"{self.comboBox_remove_preset.currentText().strip()}.config")):
                 
@@ -370,8 +407,12 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
     def clear_inputs(self):
         # Clear all input fields
-        for key in self.inputDict.keys():
+        keys = list(self.inputDict.keys())
+        for key in keys[:-2]:
             self.inputDict[key].clear()
+        
+        
+        
         
     def sleepSec(self, sec):
         # Disable buttons if needed
@@ -393,59 +434,13 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             else:
                 event.ignore()  # Ignore the event to prevent the window from closing
     
-class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
-    def __init__(self):
-        super().__init__()
-        self.setupUi(self)
-        
-        #self.comboBox_preset = SearchableComboBox(self)
-        #self.gridLayout.addWidget(self.comboBox_preset, 5, 1, 1, 2)
-        
-        self.button_launch_ui.setText('Launch UI')
-        self.button_launch_ui.clicked.connect(self.run_uiScript)
-        
-        # Get the directory of this file
-        self.script_dir = os.path.abspath(os.path.dirname(__file__))  
-    
-        # Populate inputs based on the preset you selected
-        for file in os.listdir(os.path.join(self.script_dir, "automation_presets")):
-            file = file[:-7]
-            self.comboBox.insertItem(self.findAlphabeticalIndex(self.comboBox, file), file)
-        
-        if self.comboBox.count() < 1:
-            self.comboBox.setEditable(False)
-            self.comboBox.setPlaceholderText('-- No Presets --')
-            #self.comboBox.setItemText(0, )
-            self.comboBox.setStyleSheet("background-color: rgb(137, 137, 137)")
-            
-        self.comboBox.setCurrentIndex(-1)
-        
-    def findAlphabeticalIndex(self, combo, item):
-        # Used to sort combobox alphabetically
-        combo_list = [combo.itemText(i) for i in range(combo.count())]
-        combo_list.append(item)
-        combo_list.sort(key=lambda i: i.upper())
-        return combo_list.index(item)
-    
-    def run_uiScript(self):
-        # Starts up main UI screen
-        if self.comboBox.currentText().strip() == '' or self.comboBox.findText(self.comboBox.currentText()) != -1:
-            self.new_ui = Window()
-            self.new_ui.show() 
-            if self.comboBox.currentText() != '':
-                self.new_ui.comboBox_preset.setCurrentIndex(self.new_ui.comboBox_preset.findText(self.comboBox.currentText().strip()))
-                self.new_ui.populate_inputs()
-            self.close()
-         
-    def set_background_image(self, image_path):
-        self.setStyleSheet(f"QMainWindow {{background-image: url({image_path}); background-repeat: no-repeat; background-position: center;}}")
+
 
 def main(): 
-    
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Windows')
     # app.setStyleSheet(PyQt5_stylesheets.load_stylesheet_pyqt5(style="style_Dark"))
-    ui = LoginWindow()
+    ui = Window()
     ui.show()
     
     sys.exit(app.exec_())

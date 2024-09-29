@@ -17,24 +17,24 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
         MainWindow.resize(892, 749) 
-        
         MainWindow.setStyleSheet(PyQt5_stylesheets.load_stylesheet_pyqt5(style="style_Dark"))
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
+        
         self.line_dcan_path = QtWidgets.QLineEdit(self.centralwidget)
         self.line_dcan_path.setObjectName("line_dcan_path")
         self.gridLayout.addWidget(self.line_dcan_path, 1, 0, 1, 1)
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 20, 0, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
+        self.gridLayout.addWidget(self.pushButton, 20, 1, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName("pushButton_2")
         self.gridLayout.addWidget(self.pushButton_2, 4, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
         self.button_clear= QtWidgets.QPushButton(self.centralwidget)
         self.button_clear.setObjectName("button_clear")
-        self.gridLayout.addWidget(self.button_clear, 20, 0, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        self.gridLayout.addWidget(self.button_clear, 20, 1, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
         self.button_save= QtWidgets.QPushButton(self.centralwidget)
         self.button_save.setObjectName("button_save")
         self.gridLayout.addWidget(self.button_save, 0, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
@@ -117,32 +117,32 @@ class Ui_MainWindow(object):
         self.label_distribution = QtWidgets.QLabel(self.centralwidget)
         self.label_distribution.setMaximumSize(QtCore.QSize(180, 20))
         self.label_distribution.setObjectName("label_distribution")
-        self.gridLayout.addWidget(self.label_distribution, 16, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_distribution, 18, 0, 1, 1)
         self.line_synth_path = QtWidgets.QLineEdit(self.centralwidget)
         self.line_synth_path.setObjectName("line_synth_path")
         self.gridLayout.addWidget(self.line_synth_path, 5, 0, 1, 1)
         self.label_task_number = QtWidgets.QLabel(self.centralwidget)
         self.label_task_number.setMaximumSize(QtCore.QSize(150, 20))
         self.label_task_number.setObjectName("label_task_number")
-        self.gridLayout.addWidget(self.label_task_number, 14, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_task_number, 12, 0, 1, 1)
         self.line_synth_img_amt = QtWidgets.QLineEdit(self.centralwidget)
         self.line_synth_img_amt.setObjectName("line_synth_img_amt")
-        self.gridLayout.addWidget(self.line_synth_img_amt, 19, 0, 1, 1, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.line_synth_img_amt, 15, 0, 1, 1, QtCore.Qt.AlignTop)
        # self.line_slurm_scripts_path = QtWidgets.QLineEdit(self.centralwidget)
        # self.line_slurm_scripts_path.setObjectName("line_slurm_scripts_path")
        # self.gridLayout.addWidget(self.line_slurm_scripts_path, 17, 0, 1, 1, QtCore.Qt.AlignTop)
-        self.line_modality = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_modality.setObjectName("line_modality")
-        self.gridLayout.addWidget(self.line_modality, 13, 0, 1, 1)
         
-        '''
+        
+        
+       ### G R O U P   B O X   1
         
         self.groupBox_modality = QGroupBox()
+        self.groupBox_modality.setFixedSize(175,50)
         
-        self.radio_t1 = QRadioButton("t1", self.centralwidget)
+        self.radio_t1 = QRadioButton("t1  ", self.centralwidget)
         self.radio_t1.setObjectName(f'radio_t1')
         
-        self.radio_t2 = QRadioButton("t2", self.centralwidget)
+        self.radio_t2 = QRadioButton("t2  ", self.centralwidget)
         self.radio_t2.setObjectName(f'radio_t2')
         
         self.radio_t1t2 = QRadioButton("t1t2", self.centralwidget)
@@ -158,15 +158,15 @@ class Ui_MainWindow(object):
         
         self.groupBox_modality.setLayout(self.hbox_modality)
         
-        self.gridLayout.addWidget(self.groupBox_modality, 13, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.gridLayout.addWidget(self.groupBox_modality, 17, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.groupBox_modality.setFlat(True)
         
-        '''
+        ###
         
         self.label_synth_img_amt = QtWidgets.QLabel(self.centralwidget)
         self.label_synth_img_amt.setMaximumSize(QtCore.QSize(300, 20))
         self.label_synth_img_amt.setObjectName("label_synth_img_amt")
-        self.gridLayout.addWidget(self.label_synth_img_amt, 18, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_synth_img_amt, 14, 0, 1, 1)
         
         self.label_results_path = QtWidgets.QLabel(self.centralwidget)
         self.label_results_path.setMaximumSize(QtCore.QSize(300, 20))
@@ -186,10 +186,7 @@ class Ui_MainWindow(object):
         self.line_trained_models_path.setObjectName("line_trained_models_path")
         self.gridLayout.addWidget(self.line_trained_models_path, 11, 0, 1, 1, QtCore.Qt.AlignTop)
         
-        #self.label_slurm_scripts_path = QtWidgets.QLabel(self.centralwidget)
-        #self.label_slurm_scripts_path.setMaximumSize(QtCore.QSize(300, 20))
-       # self.label_slurm_scripts_path.setObjectName("label_slurm_scripts_path")
-        #self.gridLayout.addWidget(self.label_slurm_scripts_path, 16, 0, 1, 1)
+   
         self.label_task_path = QtWidgets.QLabel(self.centralwidget)
         self.label_task_path.setMaximumSize(QtCore.QSize(300, 20))
         self.label_task_path.setObjectName("label_task_path")
@@ -198,31 +195,34 @@ class Ui_MainWindow(object):
         self.label_dcan_path.setMaximumSize(QtCore.QSize(150, 20))
         self.label_dcan_path.setObjectName("label_dcan_path")
         self.gridLayout.addWidget(self.label_dcan_path, 0, 0, 1, 1)
+
         self.label_modality = QtWidgets.QLabel(self.centralwidget)
         self.label_modality.setMaximumSize(QtCore.QSize(150, 20))
         self.label_modality.setObjectName("label_modality")
-        self.gridLayout.addWidget(self.label_modality, 12, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_modality, 16, 0, 1, 1)
+
         self.line_raw_data_base_path = QtWidgets.QLineEdit(self.centralwidget)
         self.line_raw_data_base_path.setObjectName("line_raw_data_base_path")
         self.gridLayout.addWidget(self.line_raw_data_base_path, 7, 0, 1, 1)
+
         self.line_task_path = QtWidgets.QLineEdit(self.centralwidget)
         self.line_task_path.setObjectName("line_task_path")
         self.gridLayout.addWidget(self.line_task_path, 3, 0, 1, 1)
         self.line_task_number = QtWidgets.QLineEdit(self.centralwidget)
         self.line_task_number.setObjectName("line_task_number")
-        self.gridLayout.addWidget(self.line_task_number, 15, 0, 1, 1)
+        self.gridLayout.addWidget(self.line_task_number, 13, 0, 1, 1)
         self.label_synth_path = QtWidgets.QLabel(self.centralwidget)
         self.label_synth_path.setMaximumSize(QtCore.QSize(150, 20))
         self.label_synth_path.setObjectName("label_synth_path")
         self.gridLayout.addWidget(self.label_synth_path, 4, 0, 1, 1)
-        self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_distribution.setObjectName("line_distribution")
-        self.gridLayout.addWidget(self.line_distribution, 17, 0, 1, 1)
+        # self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
+        # self.line_distribution.setObjectName("line_distribution")
+        # self.gridLayout.addWidget(self.line_distribution, 17, 0, 1, 1)
         
-        '''
+        ### G R O U P   B O X   2
         
         self.groupBox_distribution = QGroupBox()
-        
+        self.groupBox_distribution.setFixedSize(175,50)
         self.radio_normal = QRadioButton("normal", self.centralwidget)
         self.radio_normal.setObjectName(f'radio_normal')
         
@@ -238,10 +238,10 @@ class Ui_MainWindow(object):
         
         self.groupBox_distribution.setLayout(self.hbox_distribution)
         
-        self.gridLayout.addWidget(self.groupBox_distribution, 17, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
+        self.gridLayout.addWidget(self.groupBox_distribution, 19, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
         self.groupBox_distribution.setFlat(True)
         
-        '''
+ 
         
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QtWidgets.QMenuBar(MainWindow)
@@ -272,6 +272,14 @@ class Ui_MainWindow(object):
         self.button_browse_4.setObjectName(f"button_browse_4")
         self.gridLayout.addWidget(self.button_browse_4, 7, 1, 1, 1)
 
+        self.button_browse_5=QtWidgets.QPushButton(self.centralwidget)
+        self.button_browse_5.setObjectName(f"button_browse_4")
+        self.gridLayout.addWidget(self.button_browse_5, 9, 1, 1, 1)
+
+        self.button_browse_6=QtWidgets.QPushButton(self.centralwidget)
+        self.button_browse_6.setObjectName(f"button_browse_4")
+        self.gridLayout.addWidget(self.button_browse_6, 11, 1, 1, 1)
+
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
@@ -299,6 +307,8 @@ class Ui_MainWindow(object):
         self.button_browse_4.setText(_translate("MainWindow", "Browse Paths"))
         self.button_browse_3.setText(_translate("MainWindow", "Browse Paths"))
         self.button_browse_2.setText(_translate("MainWindow", "Browse Paths"))
+        self.button_browse_5.setText(_translate("MainWindow", "Browse Paths"))
+        self.button_browse_6.setText(_translate("MainWindow", "Browse Paths"))
         
         #self.label_slurm_scripts_path.setText(_translate("MainWindow", "Slurm Scripts Path"))
         self.menuiuhwuaibfa.setTitle(_translate("MainWindow", "iuhwuaibfa"))
@@ -308,6 +318,7 @@ class Ui_MainWindow(object):
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
+    
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
     ui.setupUi(MainWindow)

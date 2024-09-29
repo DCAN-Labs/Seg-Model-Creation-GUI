@@ -27,20 +27,12 @@ def get_job_id_by_name(job_name, fold=-2):
         if fold >= 0:
             while (not os.path.isfile(os.path.join(slurm_scripts_path, f"Train_{fold}_{args.task_number}_nnUNet-{job_id}.out"))) or (not os.path.isfile(os.path.join(slurm_scripts_path, f"Train_{fold}_{args.task_number}_nnUNet-{job_id}.err"))):
                 time.sleep(5)        
-                # break_count += 1
-                # if break_count >= 10000:
-                #     print("Training job couldn't start, you may try reruning the program from the training step")
-                #     subprocess.run(["scancel", job_id])
-                #     exit()
+                
         
         if fold == -1:
             while (not os.path.isfile(os.path.join(slurm_scripts_path, f"infer_{args.task_number}-{job_id}.out"))) or (not os.path.isfile(os.path.join(slurm_scripts_path, f"infer_{args.task_number}-{job_id}.err"))):
                 time.sleep(5)        
-                # break_count += 1
-                # if break_count >= 10000:
-                #     print("Infer job couldn't start, you may try reruning the program from the training step")
-                #     subprocess.run(["scancel", job_id])
-                #     exit()
+                
         
         return job_id
     else:
