@@ -213,6 +213,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         elif self.running == True:
             self.menuiuhwuaibfa.setTitle("Program Stopped")
             self.temp_thread.stop_program() # Stops subrocesses within thread. This will cause the finish signal to be sent
+    
     def GroupBox_Check(self,num):
         #checks which is checked and returns the value
         if num==0: #modality
@@ -280,14 +281,21 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 f = open(os.path.join(self.script_dir, "automation_presets", f"{self.comboBox_preset.currentText().strip()}.config"))
                 lines = [line for line in f.readlines() if line.strip()] # Ignore blank lines
 
-                for line in lines[:-2]:
+                for line in lines:
                     line = line.strip().split('=')
                     if line[0] in self.inputDict.keys():
                         # If there is no info associated with a certain input, clear the input line
                         if len(line) == 1:
                             self.inputDict[line[0]].clear() 
                         elif len(line) == 2:
-                            self.inputDict[line[0]].setText(line[1])
+                            if line[0] == "modality" or line[0] == "distribution":
+                                radio_button = getattr(self, f'radio_{line[1]}')  # Access the radio button dynamically
+                                radio_button.setChecked(True)
+                            else:
+                                self.inputDict[line[0]].setText(line[1])
+                                
+                                
+                '''               
                 for i, line in enumerate(lines[-2:], start=0):
                     line = line.strip().split('=')
                     if line[0] in self.inputDict.keys():
@@ -296,7 +304,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                         elif len(line) == 2:
                             radio_button = getattr(self, f'radio_{line[1]}')  # Access the radio button dynamically
                             radio_button.setChecked(True)
-                
+                '''
                 
                             
                 f.close()
@@ -311,7 +319,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         if self.line_save_preset.text().strip() == "":
             return
         values = list(self.inputDict.values())
-        if all(inp.text().strip() == "" for inp in values[:-2]) or (self.GroupBox_Check(0)=='0' or self.GroupBox_Check(0)=='0'):
+        if all(inp.text().strip() == "" for inp in values[:-2]) and (self.GroupBox_Check(0)=='0' or self.GroupBox_Check(0)=='0'):
     
             print("Please fill out at least one input")
             self.menuiuhwuaibfa.setTitle("Please fill out at least one input")
@@ -323,13 +331,13 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 self.comboBox_preset.removeItem(self.comboBox_preset.findText(self.line_save_preset.text().strip()))
                 self.comboBox_remove_preset.removeItem(self.comboBox_remove_preset.findText(self.line_save_preset.text().strip()))
         # Make sure file doesn't exist yet and create presets data
-        if not os.path.isfile(os.path.join(self.script_dir, "automation_presets", f"{self.line_save_preset.text().strip()}.config")):
+        if not os.path.isfile(os.path.join(self.script_dir, "sautomation_presets", f"{self.line_save_preset.text().strip()}.config")):
             f = open(os.path.join(self.script_dir, "automation_presets", f"{self.line_save_preset.text().strip()}.config"), "w")
             for key, val in list(self.inputDict.items())[:-2]:
-              
                 f.write(f"{key}={val.text().strip()}\n")
             for i, (key, val) in enumerate(list(self.inputDict.items())[-2:], start=0):
                     f.write(f"{key}={self.GroupBox_Check(i)}\n")
+            f.close()     
             f.close()
             
             self.comboBox_preset.setStyleSheet("")
@@ -411,8 +419,13 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         for key in keys[:-2]:
             self.inputDict[key].clear()
         
-        
-        
+        self.radio_t1.setChecked(False)
+        self.radio_t2.setChecked(False)
+        self.radio_t1t2.setChecked(False)
+
+        self.radio_normal.setChecked(False)
+        self.radio_uniform.setChecked(False)
+            
         
     def sleepSec(self, sec):
         # Disable buttons if needed
