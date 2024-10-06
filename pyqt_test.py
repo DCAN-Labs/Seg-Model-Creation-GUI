@@ -193,7 +193,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                 if self.check_inputs():
                     self.menuiuhwuaibfa.setTitle("Running...")
                     self.check_status()
-                    running_tasks.append*
+                    #running_tasks.append*
                     # Start new worker thread to run main program. Allows UI to continue working along with it
                     self.temp_thread = Thread(Path(self.line_dcan_path.text().strip()), Path(self.line_task_path.text().strip()), Path(self.line_synth_path.text().strip()), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
                                             self.line_modality.text().strip().lower(), self.line_task_number.text().strip(), self.line_distribution.text().strip().lower(), self.line_synth_img_amt.text().strip(), self.script_dir, str(self.check_list))
