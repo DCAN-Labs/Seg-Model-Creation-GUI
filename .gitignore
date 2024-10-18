@@ -162,8 +162,8 @@ cython_debug/
 #.idea/
 
 
-/automation_presets/
-/min_maxes/
+/automation_presets/*
+/min_maxes/*
 /scripts/slurm_scripts/*
 !/scripts/slurm_scripts/*.sh
 /scripts/slurm_scripts/*/
