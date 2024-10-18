@@ -106,9 +106,10 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
         # Set up presets
         for file in os.listdir(os.path.join(self.script_dir, "automation_presets")):
-            file = file[:-7]
-            self.comboBox_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_preset, file), file)
-            self.comboBox_remove_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_remove_preset, file), file)
+            if ".config" in file:
+                file = file[:-7]
+                self.comboBox_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_preset, file), file)
+                self.comboBox_remove_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_remove_preset, file), file)
             
         if self.comboBox_preset.count() < 1:
             self.comboBox_preset.setEditable(False)
@@ -409,8 +410,9 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
     
         # Populate inputs based on the preset you selected
         for file in os.listdir(os.path.join(self.script_dir, "automation_presets")):
-            file = file[:-7]
-            self.comboBox.insertItem(self.findAlphabeticalIndex(self.comboBox, file), file)
+            if ".config" in file:
+                file = file[:-7]
+                self.comboBox.insertItem(self.findAlphabeticalIndex(self.comboBox, file), file)
         
         if self.comboBox.count() < 1:
             self.comboBox.setEditable(False)
