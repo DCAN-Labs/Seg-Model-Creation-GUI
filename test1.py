@@ -23,239 +23,141 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
+        #path lines:
+        #dcan
         self.line_dcan_path = QtWidgets.QLineEdit(self.centralwidget)
         self.line_dcan_path.setObjectName("line_dcan_path")
         self.gridLayout.addWidget(self.line_dcan_path, 1, 0, 1, 1)
-        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 20, 0, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
-        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
-        self.pushButton_2.setObjectName("pushButton_2")
-        self.gridLayout.addWidget(self.pushButton_2, 4, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
-        self.button_clear= QtWidgets.QPushButton(self.centralwidget)
-        self.button_clear.setObjectName("button_clear")
-        self.gridLayout.addWidget(self.button_clear, 20, 0, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
-        self.button_save= QtWidgets.QPushButton(self.centralwidget)
-        self.button_save.setObjectName("button_save")
-        self.gridLayout.addWidget(self.button_save, 0, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
-        self.button_remove= QtWidgets.QPushButton(self.centralwidget)
-        self.button_remove.setObjectName("button_remove")
-        self.gridLayout.addWidget(self.button_remove, 2, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+            #labels
+            self.label_dcan_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_dcan_path.setMaximumSize(QtCore.QSize(150, 20))
+            self.label_dcan_path.setObjectName("label_dcan_path")
+            self.gridLayout.addWidget(self.label_dcan_path, 0, 0, 1, 1)
+        #task_path
+        self.line_task_path = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_task_path.setObjectName("line_task_path")
+        self.gridLayout.addWidget(self.line_task_path, 3, 0, 1, 1)
+            #labels
+            self.label_task_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_task_path.setMaximumSize(QtCore.QSize(300, 20))
+            self.label_task_path.setObjectName("label_task_path")
+            self.gridLayout.addWidget(self.label_task_path, 2, 0, 1, 1)
+        #SynthSeg
+        self.line_synth_path = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_synth_path.setObjectName("line_synth_path")
+        self.gridLayout.addWidget(self.line_synth_path, 5, 0, 1, 1)
+            #labels
+            self.label_synth_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_synth_path.setMaximumSize(QtCore.QSize(150, 20))
+            self.label_synth_path.setObjectName("label_synth_path")
+            self.gridLayout.addWidget(self.label_synth_path, 4, 0, 1, 1)
         
-        self.button_select_all=QtWidgets.QPushButton(self.centralwidget)
-        self.button_select_all.setObjectName("button_select_all")
-        self.gridLayout.addWidget(self.button_select_all, 15, 2, 1, 1)
+        #rawData
+        self.line_raw_data_base_path = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_raw_data_base_path.setObjectName("line_raw_data_base_path")
+        self.gridLayout.addWidget(self.line_raw_data_base_path, 7, 0, 1, 1)
+            #labels
+            self.label_raw_data_base_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_raw_data_base_path.setMaximumSize(QtCore.QSize(150, 20))
+            self.label_raw_data_base_path.setObjectName("label_raw_data_base_path")
+            self.gridLayout.addWidget(self.label_raw_data_base_path, 6, 0, 1, 1)
+        #results 
+        self.line_results_path = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_results_path.setObjectName("line_reults_path")
+        self.gridLayout.addWidget(self.line_results_path, 9, 0, 1, 1, QtCore.Qt.AlignTop)
+            #labels
+            self.label_results_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_results_path.setMaximumSize(QtCore.QSize(300, 20))
+            self.label_results_path.setObjectName("label_results_path")
+            self.gridLayout.addWidget(self.label_results_path, 8, 0, 1, 1)
+        #trained Models
+        self.line_trained_models_path = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_trained_models_path.setObjectName("line_trained_models_path")
+        self.gridLayout.addWidget(self.line_trained_models_path, 11, 0, 1, 1, QtCore.Qt.AlignTop)
+            #labels
+            self.label_trained_models_path = QtWidgets.QLabel(self.centralwidget)
+            self.label_trained_models_path.setMaximumSize(QtCore.QSize(300, 20))
+            self.label_trained_models_path.setObjectName("label_trained_models_path")
+            self.gridLayout.addWidget(self.label_trained_models_path, 10, 0, 1, 1)
+        #modality
+        self.line_modality = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_modality.setObjectName("line_modality")
+        self.gridLayout.addWidget(self.line_modality, 13, 0, 1, 1)
+            #labels
+            self.label_modality = QtWidgets.QLabel(self.centralwidget)
+            self.label_modality.setMaximumSize(QtCore.QSize(150, 20))
+            self.label_modality.setObjectName("label_modality")
+            self.gridLayout.addWidget(self.label_modality, 12, 0, 1, 1)
+        #task_number
+        self.line_task_number = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_task_number.setObjectName("line_task_number")
+        self.gridLayout.addWidget(self.line_task_number, 15, 0, 1, 1)
+            #labels
+            self.label_task_number = QtWidgets.QLabel(self.centralwidget)
+            self.label_task_number.setMaximumSize(QtCore.QSize(150, 20))
+            self.label_task_number.setObjectName("label_task_number")
+            self.gridLayout.addWidget(self.label_task_number, 14, 0, 1, 1)
+        #distribution
+        self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_distribution.setObjectName("line_distribution")
+        self.gridLayout.addWidget(self.line_distribution, 17, 0, 1, 1)
+            #labels
+            self.label_distribution = QtWidgets.QLabel(self.centralwidget)
+            self.label_distribution.setMaximumSize(QtCore.QSize(180, 20))
+            self.label_distribution.setObjectName("label_distribution")
+            self.gridLayout.addWidget(self.label_distribution, 16, 0, 1, 1)
+        #synth_img_amt
+        self.line_synth_img_amt = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_synth_img_amt.setObjectName("line_synth_img_amt")
+        self.gridLayout.addWidget(self.line_synth_img_amt, 19, 0, 1, 1, QtCore.Qt.AlignTop)
+            #labels
+            self.label_synth_img_amt = QtWidgets.QLabel(self.centralwidget)
+            self.label_synth_img_amt.setMaximumSize(QtCore.QSize(300, 20))
+            self.label_synth_img_amt.setObjectName("label_synth_img_amt")
+            self.gridLayout.addWidget(self.label_synth_img_amt, 18, 0, 1, 1)
 
-        
-        
 
-        self.check_overwrite = QtWidgets.QCheckBox(self.centralwidget)
-        self.check_overwrite.setObjectName("check_overwrite")
-        self.gridLayout.addWidget(self.check_overwrite, 0, 4, 1, 1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
-        self.line_save_preset = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_save_preset.setObjectName("line_save_preset")
-        self.gridLayout.addWidget(self.line_save_preset, 1, 2, 1, 2)
-        
-        self.line_save_preset.setPlaceholderText("Create Preset Name") 
-        # self.line_remove_preset = QtWidgets.QLineEdit(self.centralwidget)
-        # self.line_remove_preset.setObjectName("line_remove_preset")
-        # self.gridLayout.addWidget(self.line_remove_preset, 3, 1, 1, 2)
-        
-        #self.comboBox_remove_preset = QtWidgets.QComboBox(self.centralwidget)
-        self.comboBox_remove_preset = ComboBox(self.centralwidget)
-        self.comboBox_remove_preset.setObjectName("comboBox_remove_preset")
-        self.comboBox_remove_preset.setFixedSize(200, 30)  # Set fixed size
-        self.gridLayout.addWidget(self.comboBox_remove_preset, 3, 2, 1, 2)
-        
-        self.comboBox_remove_preset.setEditable(True) 
-        self.comboBox_remove_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
-        self.comboBox_remove_preset.setInsertPolicy(QComboBox.NoInsert) 
-        
-        self.comboBox_remove_preset.setCurrentIndex(-1)
-        self.comboBox_remove_preset.lineEdit().setPlaceholderText("-- Remove Preset --")
-        
-        # self.line_set_preset = QtWidgets.QLineEdit(self.centralwidget)
-        # self.line_set_preset.setObjectName("line_set_preset")
-        # self.gridLayout.addWidget(self.line_set_preset, 5, 1, 1, 2)
-        #'''
-        self.comboBox_preset = ComboBox(self.centralwidget)
-        self.comboBox_preset.setObjectName("comboBox_preset")
-        self.comboBox_preset.setFixedSize(200, 30)  # Set fixed size
-        self.gridLayout.addWidget(self.comboBox_preset, 5, 2, 1, 2)
-          
-        self.comboBox_preset.setEditable(True) 
-        self.comboBox_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
-        self.comboBox_preset.setInsertPolicy(QComboBox.NoInsert) 
-        
-        self.comboBox_preset.setCurrentIndex(-1)
-        self.comboBox_preset.lineEdit().setPlaceholderText("-- Select Preset --")
+        #other Lines & labels
 
-        self.checkBoxes = []  # Store references to checkboxes
-        run_list = ['Resize Images', 'Mins/Maxes', 'SynthSeg Image Creation', 'Copying SynthSeg Images Over', 'Create JSON File','Plan and Preprocess','Training the Model', 'Running Inference']
-        for i in range(8):
-            self.checkBox = QCheckBox(run_list[i], self.centralwidget)
-            self.checkBox.setObjectName(f'checkBox_{i}')
-            self.gridLayout.addWidget(self.checkBox, i+7, 2, 1, 1)
-            self.checkBox.setChecked(True)
-            self.checkBoxes.append(self.checkBox)
-        
-
-        self.label_i = QtWidgets.QLabel(self.centralwidget)
-        self.label_i.setObjectName("label_i")
-        self.gridLayout.addWidget(self.label_i, 6, 2, 1, 1)
-
-
-        #'''
+        #overide label
         self.label_overwrite = QtWidgets.QLabel(self.centralwidget)
         self.label_overwrite.setMaximumSize(QtCore.QSize(100, 20))
         self.label_overwrite.setObjectName("label_overwrite")
         self.gridLayout.addWidget(self.label_overwrite, 0, 3, 1, 1, QtCore.Qt.AlignLeft)
-        self.label_raw_data_base_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_raw_data_base_path.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_raw_data_base_path.setObjectName("label_raw_data_base_path")
-        self.gridLayout.addWidget(self.label_raw_data_base_path, 6, 0, 1, 1)
-        self.label_distribution = QtWidgets.QLabel(self.centralwidget)
-        self.label_distribution.setMaximumSize(QtCore.QSize(180, 20))
-        self.label_distribution.setObjectName("label_distribution")
-        self.gridLayout.addWidget(self.label_distribution, 16, 0, 1, 1)
-        self.line_synth_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_synth_path.setObjectName("line_synth_path")
-        self.gridLayout.addWidget(self.line_synth_path, 5, 0, 1, 1)
-        self.label_task_number = QtWidgets.QLabel(self.centralwidget)
-        self.label_task_number.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_task_number.setObjectName("label_task_number")
-        self.gridLayout.addWidget(self.label_task_number, 14, 0, 1, 1)
-        self.line_synth_img_amt = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_synth_img_amt.setObjectName("line_synth_img_amt")
-        self.gridLayout.addWidget(self.line_synth_img_amt, 19, 0, 1, 1, QtCore.Qt.AlignTop)
-       # self.line_slurm_scripts_path = QtWidgets.QLineEdit(self.centralwidget)
-       # self.line_slurm_scripts_path.setObjectName("line_slurm_scripts_path")
-       # self.gridLayout.addWidget(self.line_slurm_scripts_path, 17, 0, 1, 1, QtCore.Qt.AlignTop)
-        self.line_modality = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_modality.setObjectName("line_modality")
-        self.gridLayout.addWidget(self.line_modality, 13, 0, 1, 1)
-        
-        '''
-        
-        self.groupBox_modality = QGroupBox()
-        
-        self.radio_t1 = QRadioButton("t1", self.centralwidget)
-        self.radio_t1.setObjectName(f'radio_t1')
-        
-        self.radio_t2 = QRadioButton("t2", self.centralwidget)
-        self.radio_t2.setObjectName(f'radio_t2')
-        
-        self.radio_t1t2 = QRadioButton("t1t2", self.centralwidget)
-        self.radio_t1t2.setObjectName(f'radio_t1t2')
-        
-        self.hbox_modality = QHBoxLayout()
-        self.hbox_modality.addWidget(self.radio_t1)
-        self.hbox_modality.addWidget(self.radio_t2)
-        self.hbox_modality.addWidget(self.radio_t1t2)
-        self.hbox_modality.addStretch(1)
-        self.hbox_modality.setContentsMargins(0, 0, 0, 0)
-        self.hbox_modality.setSpacing(0)
-        
-        self.groupBox_modality.setLayout(self.hbox_modality)
-        
-        self.gridLayout.addWidget(self.groupBox_modality, 13, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.groupBox_modality.setFlat(True)
-        
-        '''
-        
-        self.label_synth_img_amt = QtWidgets.QLabel(self.centralwidget)
-        self.label_synth_img_amt.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_synth_img_amt.setObjectName("label_synth_img_amt")
-        self.gridLayout.addWidget(self.label_synth_img_amt, 18, 0, 1, 1)
-        
-        self.label_results_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_results_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_results_path.setObjectName("label_results_path")
-        self.gridLayout.addWidget(self.label_results_path, 8, 0, 1, 1)
-        
-        self.line_results_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_results_path.setObjectName("line_reults_path")
-        self.gridLayout.addWidget(self.line_results_path, 9, 0, 1, 1, QtCore.Qt.AlignTop)
-        
-        self.label_trained_models_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_trained_models_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_trained_models_path.setObjectName("label_trained_models_path")
-        self.gridLayout.addWidget(self.label_trained_models_path, 10, 0, 1, 1)
-        
-        self.line_trained_models_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_trained_models_path.setObjectName("line_trained_models_path")
-        self.gridLayout.addWidget(self.line_trained_models_path, 11, 0, 1, 1, QtCore.Qt.AlignTop)
-        
-        #self.label_slurm_scripts_path = QtWidgets.QLabel(self.centralwidget)
-        #self.label_slurm_scripts_path.setMaximumSize(QtCore.QSize(300, 20))
-       # self.label_slurm_scripts_path.setObjectName("label_slurm_scripts_path")
-        #self.gridLayout.addWidget(self.label_slurm_scripts_path, 16, 0, 1, 1)
-        self.label_task_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_task_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_task_path.setObjectName("label_task_path")
-        self.gridLayout.addWidget(self.label_task_path, 2, 0, 1, 1)
-        self.label_dcan_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_dcan_path.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_dcan_path.setObjectName("label_dcan_path")
-        self.gridLayout.addWidget(self.label_dcan_path, 0, 0, 1, 1)
-        self.label_modality = QtWidgets.QLabel(self.centralwidget)
-        self.label_modality.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_modality.setObjectName("label_modality")
-        self.gridLayout.addWidget(self.label_modality, 12, 0, 1, 1)
-        self.line_raw_data_base_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_raw_data_base_path.setObjectName("line_raw_data_base_path")
-        self.gridLayout.addWidget(self.line_raw_data_base_path, 7, 0, 1, 1)
-        self.line_task_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_task_path.setObjectName("line_task_path")
-        self.gridLayout.addWidget(self.line_task_path, 3, 0, 1, 1)
-        self.line_task_number = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_task_number.setObjectName("line_task_number")
-        self.gridLayout.addWidget(self.line_task_number, 15, 0, 1, 1)
-        self.label_synth_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_synth_path.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_synth_path.setObjectName("label_synth_path")
-        self.gridLayout.addWidget(self.label_synth_path, 4, 0, 1, 1)
-        self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_distribution.setObjectName("line_distribution")
-        self.gridLayout.addWidget(self.line_distribution, 17, 0, 1, 1)
-        
-        '''
-        
-        self.groupBox_distribution = QGroupBox()
-        
-        self.radio_normal = QRadioButton("normal", self.centralwidget)
-        self.radio_normal.setObjectName(f'radio_normal')
-        
-        self.radio_uniform = QRadioButton("uniform", self.centralwidget)
-        self.radio_uniform.setObjectName(f'radio_uniform')
-        
-        self.hbox_distribution = QHBoxLayout()
-        self.hbox_distribution.addWidget(self.radio_uniform)
-        self.hbox_distribution.addWidget(self.radio_normal)
-        self.hbox_distribution.addStretch(1)
-        self.hbox_distribution.setContentsMargins(0, 0, 0, 0)
-        self.hbox_distribution.setSpacing(0)
-        
-        self.groupBox_distribution.setLayout(self.hbox_distribution)
-        
-        self.gridLayout.addWidget(self.groupBox_distribution, 17, 0, 1, 1, QtCore.Qt.AlignLeft | QtCore.Qt.AlignVCenter)
-        self.groupBox_distribution.setFlat(True)
-        
-        '''
-        
-        MainWindow.setCentralWidget(self.centralwidget)
-        self.menubar = QtWidgets.QMenuBar(MainWindow)
-        self.menubar.setGeometry(QtCore.QRect(0, 0, 892, 26))
-        self.menubar.setObjectName("menubar")
-        self.menuiuhwuaibfa = QtWidgets.QMenu(self.menubar)
-        self.menuiuhwuaibfa.setObjectName("menuiuhwuaibfa")
-        MainWindow.setMenuBar(self.menubar)
-        self.statusbar = QtWidgets.QStatusBar(MainWindow)
-        self.statusbar.setObjectName("statusbar")
-        MainWindow.setStatusBar(self.statusbar)
-        self.menubar.addAction(self.menuiuhwuaibfa.menuAction())
+        #save preset
+        self.line_save_preset = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_save_preset.setObjectName("line_save_preset")
+        self.gridLayout.addWidget(self.line_save_preset, 1, 2, 1, 2)
+        self.line_save_preset.setPlaceholderText("Create Preset Name") 
+        #labels
 
-        
+        #buttons:
+        #run/cancel
+        self.pushButton = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton.setObjectName("pushButton")
+        self.gridLayout.addWidget(self.pushButton, 20, 0, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
+        #populate preset
+        self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
+        self.pushButton_2.setObjectName("pushButton_2")
+        self.gridLayout.addWidget(self.pushButton_2, 4, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        #clear
+        self.button_clear= QtWidgets.QPushButton(self.centralwidget)
+        self.button_clear.setObjectName("button_clear")
+        self.gridLayout.addWidget(self.button_clear, 20, 0, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        #save preset
+        self.button_save= QtWidgets.QPushButton(self.centralwidget)
+        self.button_save.setObjectName("button_save")
+        self.gridLayout.addWidget(self.button_save, 0, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        #remove preset
+        self.button_remove= QtWidgets.QPushButton(self.centralwidget)
+        self.button_remove.setObjectName("button_remove")
+        self.gridLayout.addWidget(self.button_remove, 2, 2, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        #select all comboboxes
+        self.button_select_all=QtWidgets.QPushButton(self.centralwidget)
+        self.button_select_all.setObjectName("button_select_all")
+        self.gridLayout.addWidget(self.button_select_all, 15, 2, 1, 1)
+
+        #browse 1-4
         self.button_browse_1=QtWidgets.QPushButton(self.centralwidget)
         self.button_browse_1.setObjectName(f"button_browse_1")
         self.gridLayout.addWidget(self.button_browse_1, 1, 1, 1, 1)
@@ -271,6 +173,71 @@ class Ui_MainWindow(object):
         self.button_browse_4=QtWidgets.QPushButton(self.centralwidget)
         self.button_browse_4.setObjectName(f"button_browse_4")
         self.gridLayout.addWidget(self.button_browse_4, 7, 1, 1, 1)
+
+        #checkboxes
+        #overite checkbox
+        self.check_overwrite = QtWidgets.QCheckBox(self.centralwidget)
+        self.check_overwrite.setObjectName("check_overwrite")
+        self.gridLayout.addWidget(self.check_overwrite, 0, 4, 1, 1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
+        
+        self.checkBoxes = []  # Store references to checkboxes
+        run_list = ['Resize Images', 'Mins/Maxes', 'SynthSeg Image Creation', 'Copying SynthSeg Images Over', 'Create JSON File','Plan and Preprocess','Training the Model', 'Running Inference']
+        for i in range(8):
+            self.checkBox = QCheckBox(run_list[i], self.centralwidget)
+            self.checkBox.setObjectName(f'checkBox_{i}')
+            self.gridLayout.addWidget(self.checkBox, i+7, 2, 1, 1)
+            self.checkBox.setChecked(True)
+            self.checkBoxes.append(self.checkBox)
+        
+        
+        
+        #comboboxes:
+
+        #remove preset
+        self.comboBox_remove_preset = ComboBox(self.centralwidget)
+        self.comboBox_remove_preset.setObjectName("comboBox_remove_preset")
+        self.comboBox_remove_preset.setFixedSize(200, 30)  # Set fixed size
+        self.gridLayout.addWidget(self.comboBox_remove_preset, 3, 2, 1, 2)
+        self.comboBox_remove_preset.setEditable(True) 
+        self.comboBox_remove_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
+        self.comboBox_remove_preset.setInsertPolicy(QComboBox.NoInsert) 
+        self.comboBox_remove_preset.setCurrentIndex(-1)
+        self.comboBox_remove_preset.lineEdit().setPlaceholderText("-- Remove Preset --")
+        #preset dropdown
+        self.comboBox_preset = ComboBox(self.centralwidget)
+        self.comboBox_preset.setObjectName("comboBox_preset")
+        self.comboBox_preset.setFixedSize(200, 30)  # Set fixed size
+        self.gridLayout.addWidget(self.comboBox_preset, 5, 2, 1, 2)
+        
+        self.comboBox_preset.setEditable(True) 
+        self.comboBox_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
+        self.comboBox_preset.setInsertPolicy(QComboBox.NoInsert) 
+        
+        self.comboBox_preset.setCurrentIndex(-1)
+        self.comboBox_preset.lineEdit().setPlaceholderText("-- Select Preset --")
+
+        
+        
+        self.label_i = QtWidgets.QLabel(self.centralwidget)
+        self.label_i.setObjectName("label_i")
+        self.gridLayout.addWidget(self.label_i, 6, 2, 1, 1)
+
+      
+        MainWindow.setCentralWidget(self.centralwidget)
+
+        #Header
+        self.menubar = QtWidgets.QMenuBar(MainWindow)
+        self.menubar.setGeometry(QtCore.QRect(0, 0, 892, 26))
+        self.menubar.setObjectName("menubar")
+        self.menuiuhwuaibfa = QtWidgets.QMenu(self.menubar)
+        self.menuiuhwuaibfa.setObjectName("menuiuhwuaibfa")
+        MainWindow.setMenuBar(self.menubar)
+        self.statusbar = QtWidgets.QStatusBar(MainWindow)
+        self.statusbar.setObjectName("statusbar")
+        MainWindow.setStatusBar(self.statusbar)
+        self.menubar.addAction(self.menuiuhwuaibfa.menuAction())
+
+       
 
         self.retranslateUi(MainWindow)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
@@ -300,9 +267,8 @@ class Ui_MainWindow(object):
         self.button_browse_3.setText(_translate("MainWindow", "Browse Paths"))
         self.button_browse_2.setText(_translate("MainWindow", "Browse Paths"))
         
-        #self.label_slurm_scripts_path.setText(_translate("MainWindow", "Slurm Scripts Path"))
+       
         self.menuiuhwuaibfa.setTitle(_translate("MainWindow", "iuhwuaibfa"))
-        
         self.label_i.setText(_translate("MainWindow", "Select Which Features You Would Like to Run"))
 
 if __name__ == "__main__":
