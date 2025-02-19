@@ -31,6 +31,7 @@ RUN git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
 # Install Python dependencies
 # Assuming your GUI repo has a requirements.txt
 COPY requirements.txt .
+RUN pip install --upgrade pip
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables for repository paths
