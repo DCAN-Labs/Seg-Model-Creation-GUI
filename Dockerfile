@@ -24,7 +24,6 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Clone repositories
-# Replace these URLs with your actual repository URLs
 RUN git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
     git clone https://github.com/DCAN-Labs/SynthSeg.git && \
     git clone https://github.com/DCAN-Labs/dcan-nn-unet.git
@@ -35,8 +34,8 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables for repository paths
-ENV REPO1_PATH=/app/SynthSeg
-ENV REPO2_PATH=/app/dcan-nn-unet
+ENV SYNTHSEG_PATH=/app/SynthSeg
+ENV NNUNET_PATH=/app/dcan-nn-unet
 
 # Set display environment variable for GUI
 ENV DISPLAY=:0
