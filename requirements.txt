@@ -120,7 +120,7 @@ scikit-image==0.18.2
 scipy==1.7.3
 seaborn==0.10.0
 Send2Trash==1.8.3
-shiboken2==5.15.0
+shiboken2==5.15.1
 shiboken6==6.5.3
 simplejson==3.19.3
 sip==4.19.8
