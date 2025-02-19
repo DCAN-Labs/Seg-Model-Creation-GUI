@@ -57,7 +57,7 @@ jupyter_server_ydoc==0.8.0
 jupyterlab==3.6.7
 jupyterlab-pygments==0.2.2
 jupyterlab_server==2.24.0
-Keras==2.3.1
+Keras==3.5.0
 Keras-Preprocessing==1.1.0
 kiwisolver==1.2.0
 linecache2==1.0.0
