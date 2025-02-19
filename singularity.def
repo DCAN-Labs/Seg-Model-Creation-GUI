@@ -1,0 +1,51 @@
+BootStrap: docker
+From: python:3.9-slim
+
+%post
+    # Update package lists and install dependencies
+    apt-get update && apt-get install -y \
+        python3-pyqt5 \
+        qtbase5-dev \
+        libxcb-xinerama0 \
+        libxcb-icccm4 \
+        libxcb-image0 \
+        libxcb-keysyms1 \
+        libxcb-randr0 \
+        libxcb-render-util0 \
+        libxcb-shape0 \
+        git \
+        build-essential \
+        python3-dev \
+        libopenblas-dev \
+        liblapack-dev \
+        gfortran \
+        && rm -rf /var/lib/apt/lists/*
+
+    # Set working directory
+    mkdir -p /app
+    cd /app
+
+    # Clone repositories
+    git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git
+    git clone https://github.com/DCAN-Labs/SynthSeg.git
+    git clone https://github.com/DCAN-Labs/dcan-nn-unet.git
+
+    # Upgrade pip and install Python dependencies
+    pip install --upgrade pip setuptools wheel
+
+    # Install NumPy and pandas separately first
+    pip install --no-cache-dir numpy==1.21.6
+    pip install --no-cache-dir pandas==1.2.5
+
+    # Install remaining dependencies from requirements.txt
+    pip install --no-cache-dir -r /app/Seg-Model-Creation-GUI/requirements.txt
+
+%environment
+    # Set environment variables for repository paths
+    export REPO1_PATH=/app/SynthSeg
+    export REPO2_PATH=/app/dcan-nn-unet
+    export DISPLAY=:0  # Required for GUI applications
+
+%runscript
+    # Command to run the GUI
+    python /app/
