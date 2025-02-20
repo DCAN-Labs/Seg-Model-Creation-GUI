@@ -102,12 +102,12 @@ nilearn==0.8.1
 nipype==1.8.6
 notebook==6.5.7
 notebook_shim==0.2.4
-numpy==1.21.6
+numpy>=1.21.6
 oauthlib==3.1.0
 olefile==0.46
 opt-einsum==3.3.0
 packaging==24.0
-pandas==1.0.3
+pandas>=1.0.3
 pandocfilters==1.5.1
 parso==0.7.0
 partd==1.4.1
