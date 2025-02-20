@@ -46,9 +46,9 @@ fqdn==1.5.1
 fsspec==2023.1.0
 future==0.18.2
 gast==0.2.2
-google-auth==1.33.0
-google-auth-oauthlib==0.4.1
-google-pasta==0.2.0
+google-auth>=1.33.0
+google-auth-oauthlib>=0.4.1
+google-pasta>=0.2.0
 grpcio>=1.36.1
 h5py==2.10.0
 idna==2.9
