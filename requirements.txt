@@ -102,7 +102,7 @@ nilearn==0.8.1
 nipype==1.8.6
 notebook==6.5.7
 notebook_shim==0.2.4
-numpy>=1.21.6
+numpy~=1.21.6
 oauthlib==3.1.0
 olefile==0.46
 opt-einsum==3.3.0
