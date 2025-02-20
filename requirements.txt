@@ -160,10 +160,10 @@ rfc3986-validator==0.1.1
 rsa==4.0
 scikit-image>=0.18.2
 scikit-learn>=0.24.2
-scipy>=1.4.1
+scipy~=1.4.1
 seaborn==0.10.0
 Send2Trash==1.8.3
-setuptools>=52.0.0
+setuptools~=52.0.0
 shiboken2>=5.15.0
 shiboken6>=6.5.3
 simplejson==3.19.3
