@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
     libxcb-shape0 \
     git \
     build-essential \
-    python3.9-dev \
-    python3.9-distutils \
+    python3-dev \
+    python3-distutils \
     libopenblas-dev \
     liblapack-dev \
     gfortran \
