@@ -14,8 +14,8 @@ RUN apt-get update && apt-get install -y \
     libxcb-shape0 \
     git \
     build-essential \
-    python3-dev \
-    python3-distutils \
+    python3.9-dev \
+    python3.9-distutils \
     libopenblas-dev \
     liblapack-dev \
     gfortran \
@@ -32,8 +32,8 @@ RUN git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
 # Install Python dependencies
 # Assuming your GUI repo has a requirements.txt
 COPY requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python3.9 -m pip install --upgrade pip
+RUN python3.9 -m pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables for repository paths
 ENV SYNTHSEG_PATH=/app/SynthSeg
