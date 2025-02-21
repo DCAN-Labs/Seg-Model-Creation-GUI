@@ -1,5 +1,5 @@
 # Use Python base image
-FROM python:3.9-slim
+FROM python:3.7-slim
 
 # Install system dependencies for PyQt5
 RUN apt-get update && apt-get install -y \
@@ -32,8 +32,8 @@ RUN git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
 # Install Python dependencies
 # Assuming your GUI repo has a requirements.txt
 COPY requirements.txt .
-RUN python3.9 -m pip install --upgrade pip
-RUN python3.9 -m pip install --no-cache-dir -r requirements.txt
+RUN python3.7 -m pip install --upgrade pip
+RUN python3.7 -m pip install --no-cache-dir -r requirements.txt
 
 # Set environment variables for repository paths
 ENV SYNTHSEG_PATH=/app/SynthSeg
