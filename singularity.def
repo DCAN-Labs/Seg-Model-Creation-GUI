@@ -36,6 +36,7 @@ From: python:3.9-slim
     # Install NumPy and pandas separately first
     pip install --no-cache-dir numpy==1.21.6
     pip install --no-cache-dir pandas==1.2.5
+    
 
     # Install remaining dependencies from requirements.txt
     pip install --no-cache-dir -r /app/Seg-Model-Creation-GUI/requirements.txt

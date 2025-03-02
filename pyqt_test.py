@@ -119,6 +119,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.comboBox_preset.setStyleSheet("background-color: rgb(137, 137, 137)")
             self.comboBox_remove_preset.setStyleSheet("background-color: rgb(137, 137, 137)")
             
+            
         self.comboBox_preset.setCurrentIndex(-1)
         self.comboBox_remove_preset.setCurrentIndex(-1)
         
