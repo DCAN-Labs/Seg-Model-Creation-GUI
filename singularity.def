@@ -43,8 +43,9 @@ From: python:3.9-slim
 
 %environment
     # Set environment variables for repository paths
-    export REPO1_PATH=/app/SynthSeg
-    export REPO2_PATH=/app/dcan-nn-unet
+    export Synth_Repo=/app/SynthSeg
+    export Dcan_Repo=/app/dcan-nn-unet
+    export Seg_Model_Repo=/app/Seg-Model-Creation-GUI
     export DISPLAY=:0  # Required for GUI applications
 
 %runscript
