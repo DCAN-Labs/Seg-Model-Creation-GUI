@@ -33,18 +33,19 @@ From: python:3.9-slim
     # Upgrade pip and install Python dependencies
     pip install --upgrade pip setuptools wheel
 
-    # Install NumPy and pandas separately first
+    # Install NumPy pandas and scipy separately first
     pip install --no-cache-dir numpy==1.21.6
     pip install --no-cache-dir pandas==1.2.5
-    
+    pip install --no-cache-dir scipy==1.7.3
 
     # Install remaining dependencies from requirements.txt
-    pip install --no-cache-dir -r /app/Seg-Model-Creation-GUI/requirements.txt
+    pip install --no-cache-dir -r /app/Seg-Model-Creation-GUI/requirements.txt --upgrade
 
 %environment
     # Set environment variables for repository paths
-    export REPO1_PATH=/app/SynthSeg
-    export REPO2_PATH=/app/dcan-nn-unet
+    export Synth_Repo=/app/SynthSeg
+    export Dcan_Repo=/app/dcan-nn-unet
+    export Seg_Model_Repo=/app/Seg-Model-Creation-GUI
     export DISPLAY=:0  # Required for GUI applications
 
 %runscript

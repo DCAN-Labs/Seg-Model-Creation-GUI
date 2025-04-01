@@ -28,7 +28,6 @@ class Thread(QtCore.QThread):
     processes = []
     script_dir = ""
     check_list=[]
-
     quit_program = False
 
     def __init__(self, dcan_path, task_path, synth_path, raw_path, results_path, trained_path, modality, task_num, distribution, synth_amt, script_dir, check_list):
@@ -118,15 +117,14 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             self.comboBox_remove_preset.setPlaceholderText('No Presets')
             self.comboBox_preset.setStyleSheet("background-color: rgb(137, 137, 137)")
             self.comboBox_remove_preset.setStyleSheet("background-color: rgb(137, 137, 137)")
-            
+
             
         self.comboBox_preset.setCurrentIndex(-1)
         self.comboBox_remove_preset.setCurrentIndex(-1)
         
         # Put all input fields in a dictionary, used for presets
-        self.inputDict['dcan_path'] = self.line_dcan_path
-        self.inputDict['synth_path'] = self.line_synth_path
-        self.inputDict['task_path'] = self.line_task_path
+        #self.inputDict['synth_path'] = self.line_synth_path ***
+        self.inputDict['task_path'] = self.line_task_path 
         self.inputDict['raw_data_base_path'] = self.line_raw_data_base_path
         self.inputDict['modality'] = self.line_modality
         self.inputDict['task_number'] = self.line_task_number
@@ -161,8 +159,8 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
     
     def check_inputs(self):
         # Makes sure all inputs are vald: paths exist, option inputs are valid, etc
-        inp_dcan_path = os.path.exists(Path(self.line_dcan_path.text().strip()))
-        inp_synth_path = os.path.exists(Path(self.line_synth_path.text().strip()))
+        # inp_dcan_path = os.path.exists(Path(self.line_dcan_path.text().strip())) ***
+        # inp_synth_path = os.path.exists(Path(self.line_synth_path.text().strip())) ***
         inp_task_path = os.path.exists(Path(self.line_task_path.text().strip()))
         inp_raw_data_base_path = os.path.exists(Path(self.line_raw_data_base_path.text().strip()))
         inp_results_path= os.path.exists(Path(self.line_results_path.text().strip()))
@@ -177,7 +175,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         if inp_task_number and inp_task_path:
             tasks_match = os.path.split(Path(self.line_task_path.text().strip()))[-1] == f'Task{self.line_task_number.text().strip()}'
         
-        arguments = [inp_dcan_path, inp_synth_path, inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_synth_img_amt, inp_results_path, inp_trained_models_path, tasks_match] 
+        arguments = [ inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_synth_img_amt, inp_results_path, inp_trained_models_path, tasks_match] 
         
         if all(i == True for i in arguments):
             return True
@@ -197,7 +195,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.check_status()
                     #running_tasks.append*
                     # Start new worker thread to run main program. Allows UI to continue working along with it
-                    self.temp_thread = Thread(Path(self.line_dcan_path.text().strip()), Path(self.line_task_path.text().strip()), Path(self.line_synth_path.text().strip()), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
+                    self.temp_thread = Thread(Path("/app/dcan-nn-unet"), Path(self.line_task_path.text().strip()), Path("/app/SynthSeg"), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
                                             self.line_modality.text().strip().lower(), self.line_task_number.text().strip(), self.line_distribution.text().strip().lower(), self.line_synth_img_amt.text().strip(), self.script_dir, str(self.check_list))
                     #self.temp_thread.finished.connect(lambda: self.pushButton.setText('run')) # Listen for when process finishes
                     self.temp_thread.finished.connect(self.on_finish_thread) # Listen for when process finishes
@@ -215,10 +213,10 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
     def browse(self,num):
     # Files browser
         path_dic = {
-    1: (self.line_dcan_path, os.path.expanduser("~")),
-    2: (self.line_task_path, "/"),
-    3: (self.line_synth_path, os.path.expanduser("~")),
-    4: (self.line_raw_data_base_path, "/")
+    1: (self.line_task_path, os.path.expanduser("/")),
+    2: (self.line_raw_data_base_path, "/"),
+    3: (self.line_results_path, os.path.expanduser("/")),
+    4: (self.line_trained_models_path, "/")
         }
 
         line_edit,default_path=path_dic.get(num)
@@ -309,12 +307,12 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
             
             self.comboBox_remove_preset.setStyleSheet("")
             self.comboBox_remove_preset.insertItem(self.findAlphabeticalIndex(self.comboBox_remove_preset, self.line_save_preset.text().strip()), self.line_save_preset.text().strip())
-            #self.comboBox_remove_preset.setCurrentIndex(self.comboBox_remove_preset.findText(self.line_save_preset.text().strip()))
+            
             self.comboBox_remove_preset.setEditable(True)
             self.comboBox_remove_preset.lineEdit().setPlaceholderText('-- Select Preset --')
             self.comboBox_remove_preset.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion) 
             self.comboBox_remove_preset.setInsertPolicy(QComboBox.NoInsert)
-            #self.comboBox_preset.setCurrentIndex(-1)
+           
             if self.comboBox_remove_preset.currentText().strip() != '':
                 self.comboBox_remove_preset.setCurrentIndex(-1)
             
