@@ -100,7 +100,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
                 
         # Get the directory of this file
-        self.script_dir = os.path.abspath(os.path.dirname(__file__))
+        self.script_dir = Path("/app/Seg-Model-Creation-GUI")
         os.chdir(self.script_dir)  
         
         # Set up presets
