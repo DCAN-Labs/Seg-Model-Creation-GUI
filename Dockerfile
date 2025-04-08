@@ -25,7 +25,7 @@ RUN apt-get update && apt-get install -y \
 WORKDIR /app
 
 # Clone repositories
-RUN git clone https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
+RUN git clone -b Gui_docker https://github.com/DCAN-Labs/Seg-Model-Creation-GUI.git && \
     git clone https://github.com/DCAN-Labs/SynthSeg.git && \
     git clone https://github.com/DCAN-Labs/dcan-nn-unet.git
 
