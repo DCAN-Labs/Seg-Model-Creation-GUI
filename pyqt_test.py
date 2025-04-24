@@ -179,6 +179,9 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
         if all(i == True for i in arguments):
             return True
+        for i in range(len(arguments)):
+            if not(argument[i]):
+                print(f'Input {i+1} is Invalid...')
         return False
     
     def run_program(self):
