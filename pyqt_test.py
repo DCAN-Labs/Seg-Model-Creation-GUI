@@ -179,8 +179,9 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
         if all(i == True for i in arguments):
             return True
+        
         for i in range(len(arguments)):
-            if not(argument[i]):
+            if not(arguments[i]):
                 print(f'Input {i+1} is Invalid...')
         print(self.line_task_path.text().strip())
         print(self.line_raw_data_base_path.text().strip())
