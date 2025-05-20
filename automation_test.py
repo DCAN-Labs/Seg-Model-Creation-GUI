@@ -150,6 +150,7 @@ def move_files(src_dir, dst_dir, pattern):
             
 def submit_job(job_log_file, sbatch_list, output_file_name=''):
     # Submits jobs and adds their job_id to the active jobs list
+    print(f' {job_log_file} and {sbatch_list[0]} and {output_file_name}')
     job_ids = []
     process = subprocess.Popen(sbatch_list, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
     job_id = process.stdout.readline().strip().split()[-1].decode("utf-8")  # Extract the job ID from the sbatch output
