@@ -10,7 +10,7 @@ sbatch <<EOT
 
 #SBATCH --mem=90g        # memory per cpu-core (what is the default?)
 #SBATCH --time=96:00:00          # total run time limit (HH:MM:SS)
-#SBATCH -p a100-4     
+#SBATCH -p a100-4-long,a100-8-long     
 #SBATCH --gres=gpu:a100:1
 #SBATCH --ntasks=6               # total number of tasks across all nodes
 
