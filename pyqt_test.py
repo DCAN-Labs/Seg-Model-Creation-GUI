@@ -100,7 +100,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.setupUi(self)
                 
         # Get the directory of this file
-        self.script_dir = Path("/app/Seg-Model-Creation-GUI")
+        self.script_dir = Path("/app/Seg-Model-Creation-GUI-Container")
         os.chdir(self.script_dir)  
         
         # Set up presets
@@ -123,15 +123,22 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.comboBox_remove_preset.setCurrentIndex(-1)
         
         # Put all input fields in a dictionary, used for presets
-        #self.inputDict['synth_path'] = self.line_synth_path ***
-        self.inputDict['task_path'] = self.line_task_path 
-        self.inputDict['raw_data_base_path'] = self.line_raw_data_base_path
+        #self.inputDict['synth_path'] = self.line_synth_path 
+        #self.inputDict['task_path'] = self.line_task_path 
+        #self.inputDict['raw_data_base_path'] = self.line_raw_data_base_path
         self.inputDict['modality'] = self.line_modality
         self.inputDict['task_number'] = self.line_task_number
         self.inputDict['distribution'] = self.line_distribution
         self.inputDict['synth_img_amt'] = self.line_synth_img_amt
-        self.inputDict['results_path'] = self.line_results_path
-        self.inputDict['trained_models_path'] = self.line_trained_models_path
+        #self.inputDict['results_path'] = self.line_results_path
+        #self.inputDict['trained_models_path'] = self.line_trained_models_path
+            
+        self.dcan_path = ""
+        self.task_path = ""
+        self.synth_path = ""
+        self.raw_data_base_path = ""
+        self.results_path = ""
+        self.trained_models_path = ""
         
         self.check_list = []
         
@@ -149,6 +156,25 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         self.button_browse_2.clicked.connect(lambda: self.browse(2))
         self.button_browse_3.clicked.connect(lambda: self.browse(3))
         self.button_browse_4.clicked.connect(lambda: self.browse(4))
+
+    def make_paths(self):
+        # Set up all necessary paths witin container directories
+        self.dcan_path = Path("/app/dcan-nn-unet")
+        self.task_path = Path(f"/app/data/nnUNet_raw_data_base/nnUNet_raw_data/Task{self.line_task_number.text().strip()}")
+        self.synth_path = Path("/app/SynthSeg")
+        self.raw_data_base_path = Path(f"/app/data/nnUNet_raw_data_base")
+        self.results_path = Path("/app/data/results")
+        self.trained_models_path = Path("/app/data/results/nnUNet_raw_data_base/nnUNet_trained_models")
+        
+        self.dcan_path.mkdir(parents=True, exist_ok=True)
+        self.synth_path.mkdir(parents=True, exist_ok=True)
+        self.raw_data_base_path.mkdir(parents=True, exist_ok=True)
+        self.results_path.mkdir(parents=True, exist_ok=True)
+        self.task_path.mkdir(parents=True, exist_ok=True)
+        self.trained_models_path.mkdir(parents=True, exist_ok=True)
+        
+        output_logs = Path("/app/data/output_logs")
+        output_logs.mkdir(parents=True, exist_ok=True)
     
     def findAlphabeticalIndex(self, combo, item):
         # Used to help add items to comboboxes in alphabetical order
@@ -161,21 +187,22 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         # Makes sure all inputs are vald: paths exist, option inputs are valid, etc
         # inp_dcan_path = os.path.exists(Path(self.line_dcan_path.text().strip())) ***
         # inp_synth_path = os.path.exists(Path(self.line_synth_path.text().strip())) ***
-        inp_task_path = os.path.exists(Path(self.line_task_path.text().strip()))
-        inp_raw_data_base_path = os.path.exists(Path(self.line_raw_data_base_path.text().strip()))
-        inp_results_path= os.path.exists(Path(self.line_results_path.text().strip()))
-        inp_trained_models_path = os.path.exists(Path(self.line_trained_models_path.text().strip()))
+        inp_task_path = os.path.exists(self.task_path)
+        #inp_raw_data_base_path = os.path.exists(Path(self.line_raw_data_base_path.text().strip()))
+        #inp_results_path= os.path.exists(Path(self.line_results_path.text().strip()))
+        #inp_trained_models_path = os.path.exists(Path(self.line_trained_models_path.text().strip()))
         inp_modality = self.line_modality.text().strip().lower() == "t1" or self.line_modality.text().strip().lower() == "t2" or self.line_modality.text().strip().lower() == "t1t2"
         # TODO: update task number check
-        inp_task_number = self.line_task_number.text().isdigit()
+        inp_task_number = self.line_task_number.text().strip().isdigit()
         inp_distribution = self.line_distribution.text().strip().lower() == "uniform" or self.line_distribution.text().strip().lower() == "normal"
         inp_synth_img_amt = self.line_synth_img_amt.text().strip().isdigit()
         
         tasks_match = True
-        if inp_task_number and inp_task_path:
-            tasks_match = os.path.split(Path(self.line_task_path.text().strip()))[-1] == f'Task{self.line_task_number.text().strip()}'
+        #if inp_task_number and inp_task_path:
+        #    tasks_match = os.path.split(Path(self.line_task_path.text().strip()))[-1] == f'Task{self.line_task_number.text().strip()}'
         
-        arguments = [ inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_synth_img_amt, inp_results_path, inp_trained_models_path, tasks_match] 
+        #arguments = [ inp_task_path, inp_raw_data_base_path, inp_modality, inp_distribution, inp_synth_img_amt, inp_results_path, inp_trained_models_path, tasks_match]
+        arguments = [inp_modality, inp_distribution, inp_synth_img_amt, tasks_match]  
         
         if all(i == True for i in arguments):
             return True
@@ -185,6 +212,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
         
         # If process isn't currently running
         if self.running == False:
+            self.make_paths()
             # Make sure all inputs are filled
             if any(inp.text() == "" for inp in self.inputDict.values()):
                 print("Please fill out all input fields")
@@ -195,7 +223,7 @@ class Window(QtWidgets.QMainWindow, Ui_MainWindow):
                     self.check_status()
                     #running_tasks.append*
                     # Start new worker thread to run main program. Allows UI to continue working along with it
-                    self.temp_thread = Thread(Path("/app/dcan-nn-unet"), Path(self.line_task_path.text().strip()), Path("/app/SynthSeg"), Path(self.line_raw_data_base_path.text().strip()), Path(self.line_results_path.text().strip()), Path(self.line_trained_models_path.text().strip()),
+                    self.temp_thread = Thread(self.dcan_path, self.task_path, self.synth_path, self.raw_data_base_path, self.results_path, self.trained_models_path,
                                             self.line_modality.text().strip().lower(), self.line_task_number.text().strip(), self.line_distribution.text().strip().lower(), self.line_synth_img_amt.text().strip(), self.script_dir, str(self.check_list))
                     #self.temp_thread.finished.connect(lambda: self.pushButton.setText('run')) # Listen for when process finishes
                     self.temp_thread.finished.connect(self.on_finish_thread) # Listen for when process finishes

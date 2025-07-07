@@ -13,8 +13,8 @@
 #SBATCH --gres=gpu:a100:1
 #SBATCH --ntasks=6               # total number of tasks across all nodes
 
-#SBATCH -e Train_plan_and_preprocess-%j.err
-#SBATCH -o Train_plan_and_preprocess-%j.out
+#SBATCH -e /app/data/output_logs/Train_plan_and_preprocess-%j.err
+#SBATCH -o /app/data/output_logs/Train_plan_and_preprocess-%j.out
 
 module load gcc cuda/11.2
 source /common/software/install/migrated/anaconda/anaconda3-2018.12/etc/profile.d/conda.sh

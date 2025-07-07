@@ -9,13 +9,13 @@ sbatch <<EOT
 #SBATCH --job-name=$3_$1_Train_nnUNet # job name
 
 #SBATCH --mem=90g        # memory per cpu-core (what is the default?)
-#SBATCH --time=96:00:00          # total run time limit (HH:MM:SS)
-#SBATCH -p a100-4     
+#SBATCH --time=24:00:00          # total run time limit (HH:MM:SS)
+#SBATCH -p msigpu  
 #SBATCH --gres=gpu:a100:1
 #SBATCH --ntasks=6               # total number of tasks across all nodes
 
-#SBATCH -e Train_$1_$3_nnUNet-%j.err
-#SBATCH -o Train_$1_$3_nnUNet-%j.out
+#SBATCH -e /app/data/output_logs/Train_$1_$3_nnUNet-%j.err
+#SBATCH -o /app/data/output_logs/Train_$1_$3_nnUNet-%j.out
 
 #SBATCH -A $2
 

@@ -23,97 +23,85 @@ class Ui_MainWindow(object):
         self.centralwidget.setObjectName("centralwidget")
         self.gridLayout = QtWidgets.QGridLayout(self.centralwidget)
         self.gridLayout.setObjectName("gridLayout")
-        #path lines:
-        #dcan
         
-        #self.gridLayout.addWidget(self.line_dcan_path, 1, 0, 1, 1)
+        # Arguments
+        #task path
+        #self.line_task_path = QtWidgets.QLineEdit(self.centralwidget)
+        #self.line_task_path.setObjectName("line_task_path")
+        #self.gridLayout.addWidget(self.line_task_path, 1, 0, 1, 1)
             #labels
-        
-        #self.gridLayout.addWidget(self.label_dcan_path, 0, 0, 1, 1)
-        #task_path
-        self.line_task_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_task_path.setObjectName("line_task_path")
-        self.gridLayout.addWidget(self.line_task_path, 1, 0, 1, 1)
-            #labels
-        self.label_task_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_task_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_task_path.setObjectName("label_task_path")
-        self.gridLayout.addWidget(self.label_task_path, 0, 0, 1, 1)
-        #SynthSeg
-       
-       #self.gridLayout.addWidget(self.line_synth_path, 5, 0, 1, 1)
-            #labels
-        
-        #self.gridLayout.addWidget(self.label_synth_path, 4, 0, 1, 1)
-        
+        #self.label_task_path = QtWidgets.QLabel(self.centralwidget)
+        #self.label_task_path.setMaximumSize(QtCore.QSize(300, 20))
+        #self.label_task_path.setObjectName("label_task_path")
+        #self.gridLayout.addWidget(self.label_task_path, 0, 0, 1, 1)
         #rawData
-        self.line_raw_data_base_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_raw_data_base_path.setObjectName("line_raw_data_base_path")
-        self.gridLayout.addWidget(self.line_raw_data_base_path, 3, 0, 1, 1)
+        #self.line_raw_data_base_path = QtWidgets.QLineEdit(self.centralwidget)
+        #self.line_raw_data_base_path.setObjectName("line_raw_data_base_path")
+        #self.gridLayout.addWidget(self.line_raw_data_base_path, 3, 0, 1, 1)
             #labels
-        self.label_raw_data_base_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_raw_data_base_path.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_raw_data_base_path.setObjectName("label_raw_data_base_path")
-        self.gridLayout.addWidget(self.label_raw_data_base_path, 2, 0, 1, 1)
+        #self.label_raw_data_base_path = QtWidgets.QLabel(self.centralwidget)
+        #self.label_raw_data_base_path.setMaximumSize(QtCore.QSize(150, 20))
+        #self.label_raw_data_base_path.setObjectName("label_raw_data_base_path")
+        #self.gridLayout.addWidget(self.label_raw_data_base_path, 2, 0, 1, 1)
         #results 
-        self.line_results_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_results_path.setObjectName("line_reults_path")
-        self.gridLayout.addWidget(self.line_results_path, 5, 0, 1, 1, QtCore.Qt.AlignTop)
+        #self.line_results_path = QtWidgets.QLineEdit(self.centralwidget)
+        #self.line_results_path.setObjectName("line_reults_path")
+        #self.gridLayout.addWidget(self.line_results_path, 5, 0, 1, 1, QtCore.Qt.AlignTop)
             #labels
-        self.label_results_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_results_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_results_path.setObjectName("label_results_path")
-        self.gridLayout.addWidget(self.label_results_path, 4, 0, 1, 1)
+        #self.label_results_path = QtWidgets.QLabel(self.centralwidget)
+        #self.label_results_path.setMaximumSize(QtCore.QSize(300, 20))
+        #self.label_results_path.setObjectName("label_results_path")
+        #self.gridLayout.addWidget(self.label_results_path, 4, 0, 1, 1)
         #trained Models
-        self.line_trained_models_path = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_trained_models_path.setObjectName("line_trained_models_path")
-        self.gridLayout.addWidget(self.line_trained_models_path, 7, 0, 1, 1, QtCore.Qt.AlignTop)
+        #self.line_trained_models_path = QtWidgets.QLineEdit(self.centralwidget)
+        #self.line_trained_models_path.setObjectName("line_trained_models_path")
+        #self.gridLayout.addWidget(self.line_trained_models_path, 7, 0, 1, 1, QtCore.Qt.AlignTop)
             #labels
-        self.label_trained_models_path = QtWidgets.QLabel(self.centralwidget)
-        self.label_trained_models_path.setMaximumSize(QtCore.QSize(300, 20))
-        self.label_trained_models_path.setObjectName("label_trained_models_path")
-        self.gridLayout.addWidget(self.label_trained_models_path, 6, 0, 1, 1)
-        #modality
-        self.line_modality = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_modality.setObjectName("line_modality")
-        self.gridLayout.addWidget(self.line_modality, 9, 0, 1, 1)
-            #labels
-        self.label_modality = QtWidgets.QLabel(self.centralwidget)
-        self.label_modality.setMaximumSize(QtCore.QSize(150, 20))
-        self.label_modality.setObjectName("label_modality")
-        self.gridLayout.addWidget(self.label_modality, 8, 0, 1, 1)
+        #self.label_trained_models_path = QtWidgets.QLabel(self.centralwidget)
+        #self.label_trained_models_path.setMaximumSize(QtCore.QSize(300, 20))
+        #self.label_trained_models_path.setObjectName("label_trained_models_path")
+        #self.gridLayout.addWidget(self.label_trained_models_path, 6, 0, 1, 1)
+        
         #task_number
         self.line_task_number = QtWidgets.QLineEdit(self.centralwidget)
         self.line_task_number.setObjectName("line_task_number")
-        self.gridLayout.addWidget(self.line_task_number, 11, 0, 1, 1)
+        self.gridLayout.addWidget(self.line_task_number, 1, 0, 1, 1)
             #labels
         self.label_task_number = QtWidgets.QLabel(self.centralwidget)
         self.label_task_number.setMaximumSize(QtCore.QSize(150, 20))
         self.label_task_number.setObjectName("label_task_number")
-        self.gridLayout.addWidget(self.label_task_number, 10, 0, 1, 1)
-        #distribution
-        self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
-        self.line_distribution.setObjectName("line_distribution")
-        self.gridLayout.addWidget(self.line_distribution, 13, 0, 1, 1)
-            #labels
-        self.label_distribution = QtWidgets.QLabel(self.centralwidget)
-        self.label_distribution.setMaximumSize(QtCore.QSize(180, 20))
-        self.label_distribution.setObjectName("label_distribution")
-        self.gridLayout.addWidget(self.label_distribution, 12, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_task_number, 0, 0, 1, 1)
         #synth_img_amt
         self.line_synth_img_amt = QtWidgets.QLineEdit(self.centralwidget)
         self.line_synth_img_amt.setObjectName("line_synth_img_amt")
-        self.gridLayout.addWidget(self.line_synth_img_amt, 15, 0, 1, 1, QtCore.Qt.AlignTop)
+        self.gridLayout.addWidget(self.line_synth_img_amt, 3, 0, 1, 1, QtCore.Qt.AlignTop)
             #labels
         self.label_synth_img_amt = QtWidgets.QLabel(self.centralwidget)
         self.label_synth_img_amt.setMaximumSize(QtCore.QSize(300, 20))
         self.label_synth_img_amt.setObjectName("label_synth_img_amt")
-        self.gridLayout.addWidget(self.label_synth_img_amt, 14, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_synth_img_amt, 2, 0, 1, 1)
+        #modality
+        self.line_modality = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_modality.setObjectName("line_modality")
+        self.gridLayout.addWidget(self.line_modality, 5, 0, 1, 1)
+            #labels
+        self.label_modality = QtWidgets.QLabel(self.centralwidget)
+        self.label_modality.setMaximumSize(QtCore.QSize(150, 20))
+        self.label_modality.setObjectName("label_modality")
+        self.gridLayout.addWidget(self.label_modality, 4, 0, 1, 1)
+        #distribution
+        self.line_distribution = QtWidgets.QLineEdit(self.centralwidget)
+        self.line_distribution.setObjectName("line_distribution")
+        self.gridLayout.addWidget(self.line_distribution, 7, 0, 1, 1)
+            #labels
+        self.label_distribution = QtWidgets.QLabel(self.centralwidget)
+        self.label_distribution.setMaximumSize(QtCore.QSize(180, 20))
+        self.label_distribution.setObjectName("label_distribution")
+        self.gridLayout.addWidget(self.label_distribution, 6, 0, 1, 1)
+        
+        #other lines & labels
 
-
-        #other Lines & labels
-
-        #overide label
+        #overwrite label
         self.label_overwrite = QtWidgets.QLabel(self.centralwidget)
         self.label_overwrite.setMaximumSize(QtCore.QSize(100, 20))
         self.label_overwrite.setObjectName("label_overwrite")
@@ -129,7 +117,7 @@ class Ui_MainWindow(object):
         #run/cancel
         self.pushButton = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton.setObjectName("pushButton")
-        self.gridLayout.addWidget(self.pushButton, 20, 0, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
+        self.gridLayout.addWidget(self.pushButton, 16, 0, 1,1, QtCore.Qt.AlignRight|QtCore.Qt.AlignBottom)
         #populate preset
         self.pushButton_2 = QtWidgets.QPushButton(self.centralwidget)
         self.pushButton_2.setObjectName("pushButton_2")
@@ -137,7 +125,7 @@ class Ui_MainWindow(object):
         #clear
         self.button_clear= QtWidgets.QPushButton(self.centralwidget)
         self.button_clear.setObjectName("button_clear")
-        self.gridLayout.addWidget(self.button_clear, 20, 0, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
+        self.gridLayout.addWidget(self.button_clear, 16, 0, 1, 1, QtCore.Qt.AlignLeft|QtCore.Qt.AlignBottom)
         #save preset
         self.button_save= QtWidgets.QPushButton(self.centralwidget)
         self.button_save.setObjectName("button_save")
@@ -245,16 +233,16 @@ class Ui_MainWindow(object):
         self.button_save.setText(_translate("MainWindow", "Save Preset"))
         self.button_remove.setText(_translate("MainWindow", "Remove Preset"))
         self.label_overwrite.setText(_translate("MainWindow", "Overwrite Save?"))
-        self.label_raw_data_base_path.setText(_translate("MainWindow", "Raw Data Base Path"))
+        #self.label_raw_data_base_path.setText(_translate("MainWindow", "Raw Data Base Path"))
         self.label_distribution.setText(_translate("MainWindow", "Distribution (uniform, normal)"))
         self.label_task_number.setText(_translate("MainWindow", "Task Number"))
         self.label_synth_img_amt.setText(_translate("MainWindow", "Number of SynthSeg Generated Images"))
-        self.label_task_path.setText(_translate("MainWindow", "Task Path"))
+        #self.label_task_path.setText(_translate("MainWindow", "Task Path"))
         
         self.label_modality.setText(_translate("MainWindow", "Modality (t1, t2, t1t2)"))
         
-        self.label_results_path.setText(_translate("MainWindow", "Results Path"))
-        self.label_trained_models_path.setText(_translate("MainWindow", "Trained Models Path"))
+        #self.label_results_path.setText(_translate("MainWindow", "Results Path"))
+        #self.label_trained_models_path.setText(_translate("MainWindow", "Trained Models Path"))
         self.button_select_all.setText(_translate("MainWindow", "Select All Boxes"))
         self.button_browse_1.setText(_translate("MainWindow", "Browse Paths"))
         self.button_browse_4.setText(_translate("MainWindow", "Browse Paths"))

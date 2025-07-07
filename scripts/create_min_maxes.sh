@@ -11,8 +11,8 @@
 #SBATCH --tmp=20gb
 #SBATCH -p msismall
 
-#SBATCH -e Create_min_maxes-%j.err
-#SBATCH -o Create_min_maxes-%j.out
+#SBATCH -e /app/data/output_logs/Create_min_maxes-%j.err
+#SBATCH -o /app/data/output_logs/Create_min_maxes-%j.out
 
 ## build script here
 

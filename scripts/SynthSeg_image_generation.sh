@@ -11,8 +11,8 @@
 #SBATCH --tmp=20gb
 #SBATCH -p msismall
 
-#SBATCH -e SynthSeg_image_generation-%j.err
-#SBATCH -o SynthSeg_image_generation-%j.out
+#SBATCH -e /app/data/output_logs/SynthSeg_image_generation-%j.err
+#SBATCH -o /app/data/output_logs/SynthSeg_image_generation-%j.out
 
 ## build script here
 

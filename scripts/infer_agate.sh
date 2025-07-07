@@ -9,8 +9,8 @@ sbatch <<EOT
 #SBATCH -p a100-4     
 #SBATCH --gres=gpu:a100:1
 #SBATCH --ntasks=1
-#SBATCH -e infer_$2-%j.err
-#SBATCH -o infer_$2-%j.out
+#SBATCH -e /app/data/output_logs/infer_$2-%j.err
+#SBATCH -o /app/data/output_logs/infer_$2-%j.out
 
 #SBATCH -A $1
 
