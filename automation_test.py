@@ -46,12 +46,106 @@ def wait_for_job_to_finish(job_id, fold, check_interval=60):
         print_counter += 1
         time.sleep(check_interval)
 
+<<<<<<< HEAD
 def monitor_log_file(file_path, process):
     # Monitors the output of a log file. (Meant for printing output of SLURM scripts to terminal)
     with open(file_path, 'r') as f:
         f.seek(0, os.SEEK_END)
         while process.poll() is None:
             line = f.readline()
+=======
+def fix_slurm_scripts(slurm_path, script_name, replaced, task_num):
+    # Adds task number to job name line (Not necessary, just to be able to distinguish jobs easier)
+    with open(os.path.join(slurm_path, script_name), 'r') as f:
+        lines = f.readlines()
+    # Modify the line containing the job name
+    for i in range(len(lines)):
+        if lines[i].strip().startswith(replaced) and not lines[i].strip().startswith(f'{replaced}_{task_num}'):
+            # Takes into account comments on this line
+            parts = lines[i].split('#')
+            parts[1] = parts[1].strip() + '_' + task_num
+            lines[i] = '#' + parts[1] + '    #' + parts[2] if len(parts) > 2 else '#' + parts[1]
+            lines[i] += '\n'
+            break
+    # Write the modified content back to the SLURM script
+    with open(os.path.join(slurm_path, script_name), 'w') as f:
+        f.writelines(lines)
+        
+def set_up_slurm_scripts_folder(task_slurm, all_slurm, task_num):
+    # Creates a script folder for your task and populates it with the necessary SLURM scripts
+    scripts = ["SynthSeg_image_generation.sh", "NnUnet_plan_and_preprocess_agate.sh", "NnUnetTrain_agate.sh", "infer_agate.sh", "create_min_maxes.sh"]
+    # Copy over slurm scripts to newly created task specific folder
+    if not os.path.isdir(task_slurm):
+        os.mkdir(task_slurm)
+    for s in scripts:
+        if not os.path.isfile(os.path.join(task_slurm, s)):
+            shutil.copyfile(os.path.join(all_slurm, s), os.path.join(task_slurm, s))
+            
+    # fix_slurm_scripts(task_slurm, "SynthSeg_image_generation.sh", "#SBATCH --job-name=SynthSeg_image_generation", task_num)
+    # fix_slurm_scripts(task_slurm, "NnUnet_plan_and_preprocess_agate.sh", "#SBATCH --job-name=plan_and_preprocess", task_num)
+    # fix_slurm_scripts(task_slurm, "create_min_maxes.sh", "#SBATCH --job-name=create_min_maxes", task_num)
+    
+    with open(os.path.join(task_slurm, "active_jobs.txt"), 'w') as f:
+        pass
+            
+def move_files(src_dir, dst_dir, pattern):
+    # Part of the copying over synthseg step
+    for filename in os.listdir(src_dir):
+        if pattern in filename:
+            src_file = os.path.join(src_dir, filename)
+            dst_file = os.path.join(dst_dir, filename)
+            shutil.move(src_file, dst_file) 
+            
+def submit_job(job_log_file, sbatch_list, output_file_name=''):
+    # Submits jobs and adds their job_id to the active jobs list
+    print(f' {job_log_file} and {sbatch_list[0]} and {output_file_name}')
+    job_ids = []
+    process = subprocess.Popen(sbatch_list, stdin = subprocess.PIPE, stdout = subprocess.PIPE)
+    job_id = process.stdout.readline().strip().split()[-1].decode("utf-8")  # Extract the job ID from the sbatch output
+    job_ids.append(job_id)
+    
+    with open(job_log_file, "a") as file:
+        for i in job_ids:
+            file.write(f"{i}\n")
+          
+    files = [f"Create_min_maxes-{job_id}.err", f"SynthSeg_image_generation-{job_id}.err"]
+         
+    if output_file_name == "min_maxes":
+        file = files[0]     
+    elif output_file_name == "synthseg":
+        file = files[1]
+    
+    # Makes sure necessary files for certain steps are created before printing updates
+    if output_file_name != '':
+        break_count = 0
+        while not os.path.isfile(os.path.join(slurm_scripts_path, file)):
+            time.sleep(5)        
+            break_count += 1
+            # if break_count >= 10000:
+            #     print(f"Job couldn't start, you may try reruning the program from the {file} step")
+            #     subprocess.run(["scancel", job_id])
+            #     exit()   
+         
+        try:
+            monitor_log_file(os.path.join(slurm_scripts_path, file), process)
+        except:
+            pass
+           
+        try:
+            process.wait()
+        except:
+            pass        
+    else:
+        process.wait()
+
+def monitor_log_file(file_path, job_process):
+    # Continuously prints out file contents
+    with open(file_path, 'r') as log_file:
+        # Move to the end of the file
+        log_file.seek(0, os.SEEK_END)
+        while job_process.poll() is None:  # While the job is still running
+            line = log_file.readline()
+>>>>>>> 01d744dbbf0ebcff8709e57293740208d58da894
             if line:
                 print(line, end='')
             else:
