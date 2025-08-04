@@ -273,9 +273,9 @@ def inference(args, slurm_scripts_path, log_file_path, script_dir):
     inferred_dir.mkdir(parents=True, exist_ok=True)
     os.chdir(slurm_scripts_path)
     time.sleep(3)
-    #submit_job(["sbatch", "-W", "infer_agate.sh", "faird", args.task_number, args.raw_data_base_path, args.trained_models_path], log_file_path)
-    #job_id = get_job_id_from_squeue(f"{args.task_number}_infer")
-    #wait_for_job_to_finish(job_id, -1)
+    submit_job(["sbatch", "-W", "infer_agate.sh", "faird", args.task_number, args.raw_data_base_path, args.trained_models_path], log_file_path)
+    job_id = get_job_id_from_squeue(f"{args.task_number}_infer")
+    wait_for_job_to_finish(job_id, -1)
     print("--- Inference Complete ---")
 
     # Create dice plots
