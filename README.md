@@ -4,17 +4,15 @@ A user-friendly interface designed to automate and streamline the process of tra
 
 ## Overview
 
-This GUI addresses the challenges of manually executing commands in the terminal for brain segmentation model training. By providing an intuitive interface, it eliminates the tedious and error-prone process of copying and pasting documentation while significantly reducing workflow downtime.
+We made a GUI
 
 **Created by:** @Emoney and @Kenevan-Carter
 
 ## Features
 
-- **Automated Workflow**: Streamlines the entire training process from data preparation to inference
-- **Custom Presets**: Save and reuse parameter configurations for different training sessions
+- **Automated Workflow**: Streamlines the entire training process from data preparation and preprocessing to inference
+- **Custom Presets**: Save and reuse configurations for different training sessions
 - **Modular Execution**: Toggle individual steps on/off based on your needs
-- **Error Reduction**: Eliminates manual command-line operations and potential copy-paste errors
-- **Time Efficient**: Focus on analytical aspects rather than technical implementation details
 
 ## Requirements
 
@@ -25,18 +23,19 @@ This GUI addresses the challenges of manually executing commands in the terminal
 
 ## Directory Structure
 
-Your data should be organized as follows:
+Your data should be organized as shown below prior to running our program:
 
 ```
 Project_Root/
 ├── nnUNet_raw_data_base/
 │   ├── nnUNet_raw_data/
-│   │   ├── Task001_YourTask/
+│   │   ├── Task000/
 │   │   │   ├── imagesTr/
 │   │   │   ├── imagesTs/
 │   │   │   ├── labelsTr/
 │   │   │   └── labelsTs/
-│   │   ├── Task002_AnotherTask/
+│   │   ├── Task001/
+│   │   ├── Task002/
 │   │   └── ...
 │   ├── nnUNet_preprocessed/ (created automatically)
 │   └── nnUNet_cropped_data/ (created automatically)
@@ -62,77 +61,53 @@ Project_Root/
 | **Modality** | `t1`, `t2`, `t1t2` | Dataset modality type |
 | **Task Number** | Integer | Unique identifier for your task (must match task path) |
 | **Distribution** | `uniform`, `normal` | Data distribution type |
-| **Number of SynthSeg Images** | Integer | Synthetic images to generate per age group |
+| **Number of SynthSeg Images** | Integer | Number of synthetic images for SynthSeg to generate per age group |
 
 ## Training Steps
 
 The GUI provides 8 configurable training steps:
 
 ### 1. Resize Images
-- **Purpose**: Initial data formatting for SynthSeg and nnUNet compatibility
-- **Output**: Uniformly formatted dataset
+- **Purpose**: Initial setup step, formats your data to uniformly to be used by SynthSeg and nNUnet
+- **Output**: Uniformly sized dataset
 
 ### 2. Mins/Maxes
 - **Purpose**: Creates priors for SynthSeg image generation
 - **Output**: Prior files stored in `GUI_repo/min_maxes/` subfolder
 
 ### 3. SynthSeg Image Creation
-- **Purpose**: Generate synthetic training images
-- **Output**: Synthetic images/labels in separate task subfolder
+- **Purpose**: Generates synthetic training images and segmentations using SynthSeg
+- **Output**: Files will be stored in your task directory. If you want to take a look at these before they are merged with the rest of the data, do not run the following steps
 
 ### 4. Copying Over SynthSeg Images
-- **Purpose**: Move synthetic data to training folders
-- **Output**: Synthetic data integrated into training dataset
+- **Purpose**: Moves synthetic data to training folders
+- **Output**: Synthetic data is put into existing training folders
 
 ### 5. Create JSON File
-- **Purpose**: Generate metadata required by nnUNet
-- **Output**: JSON configuration file in task folder
+- **Purpose**: Generates metadata required by nnUNet
+- **Output**: JSON file will be put in your task folder
 
 ### 6. Plan and Preprocess
-- **Purpose**: nnUNet preprocessing and dataset preparation
+- **Purpose**: Sets up your dataset and extracts from it the necessary info that nNUnet will need in the model training step
 - **Output**: Preprocessed data and extracted training parameters
 
 ### 7. Training the Model
-- **Purpose**: Execute nnUNet model training
-- **Output**: Trained model saved to specified trained models path
+- **Purpose**: Executes nnUNet model training
+- **Output**: Trained model saved to your trained models path
 
 ### 8. Running Inference
-- **Purpose**: Generate predictions on test data
+- **Purpose**: Generates predictions on test data and plots of the model's performance compared to ground truth
 - **Output**: 
   - `###_infer/`: Segmentation predictions
-  - `###_results/`: Comparison plots with ground truth
+  - `###_results/`: Comparison plots
 
 ## Usage
+(As of now, this has you must have access to the faird group on MSI)
 
-1. **Launch the GUI**: Open the main UI window
+1. **Launch the GUI**: Run pyqt_test to open the main UI window
 2. **Configure Paths**: Fill in all required directory paths
 3. **Set Parameters**: Specify modality, task number, distribution, and image count
 4. **Select Steps**: Choose which training steps to execute (default: all selected)
-5. **Create/Load Preset**: Save current configuration or load existing preset
-6. **Execute**: Run the selected training pipeline
-
-## Tips
-
-- **Full Pipeline**: Keep all checkboxes selected for complete start-to-finish training
-- **Partial Execution**: Uncheck steps you want to skip for debugging or resuming workflows
-- **Presets**: Use custom presets to quickly switch between different experimental configurations
-- **Directory Permissions**: Ensure you have proper access permissions to all specified directories
-
-## Output Files
-
-- **Models**: Trained models saved to your specified trained models directory
-- **Segmentations**: Inference results in `###_infer` folders
-- **Visualizations**: Comparison plots in `###_results` folders
-- **Metadata**: JSON configuration files in task directories
-- **Preprocessing**: Automated creation of preprocessed and cropped data folders
-
-## Troubleshooting
-
-- Verify all paths are correctly specified and accessible
-- Ensure task numbers match between configuration and directory structure
-- Check that required repositories (SynthSeg, dcan-nn-unet) are properly installed
-- Confirm sufficient disk space for synthetic image generation and model training
-
----
+5. **Execute**: Press Run
 
 For questions or issues, please contact the development team: @Emoney and @Kenevan-Carter
