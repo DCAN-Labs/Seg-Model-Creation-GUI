@@ -102,7 +102,7 @@ The GUI provides 8 configurable training steps:
   - `###_results/`: Comparison plots
 
 ## Usage
-(As of now, this has you must have access to the faird group on MSI)
+(As of now, to run this, you must have access to the faird group on MSI)
 
 1. **Launch the GUI**: Run pyqt_test to open the main UI window
 2. **Configure Paths**: Fill in all required directory paths
