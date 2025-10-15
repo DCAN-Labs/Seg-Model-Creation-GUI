@@ -16,7 +16,7 @@
 
 ## build script here
 
-source /home/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh
+source /projects/standard/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh
 conda activate SynthSeg-fixed-perms
 
 export PYTHONPATH=${PYTHONPATH}:$1
