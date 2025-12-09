@@ -16,9 +16,8 @@ sbatch <<EOT
 
 ## build script here
 module load gcc cuda/11.2
-source /common/software/install/migrated/anaconda/anaconda3-2018.12/etc/profile.d/conda.sh
-module load conda
-conda activate /home/support/public/pytorch_1.11.0_agate
+source /projects/standard/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh
+conda activate /projects/standard/faird/shared/code/external/envs/miniconda3/mini3/envs/pytorch_1.11.0
 
 
 export nnUNet_raw_data_base="$3"
@@ -27,5 +26,5 @@ export RESULTS_FOLDER="$4"
 
 
 
-nnUNet_predict -i $3/nnUNet_raw_data/Task$2/imagesTs -o /home/faird/shared/data/nnUNet_lundq163/$2_infer/ -t $2 -tr nnUNetTrainerV2_noMirroring -m 3d_fullres --disable_tta
+nnUNet_predict -i $3/nnUNet_raw_data/Task$2/imagesTs -o /projects/standard/faird/shared/data/nnUNet_lundq163/$2_infer/ -t $2 -tr nnUNetTrainerV2_noMirroring -m 3d_fullres --disable_tta
 EOT

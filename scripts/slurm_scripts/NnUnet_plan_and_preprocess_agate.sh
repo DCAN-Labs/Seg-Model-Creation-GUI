@@ -17,13 +17,12 @@
 #SBATCH -o Train_plan_and_preprocess-%j.out
 
 module load gcc cuda/11.2
-source /common/software/install/migrated/anaconda/anaconda3-2018.12/etc/profile.d/conda.sh
-conda activate /home/support/public/torch_cudnn8.2
-pip install numpy==1.21.6
+source /projects/standard/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh
+conda activate /projects/standard/faird/shared/code/external/envs/miniconda3/mini3/envs/pytorch_1.11.0
+
 
 export nnUNet_raw_data_base="$1"
 export nnUNet_preprocessed="$1/nnUNet_preprocessed"
 export RESULTS_FOLDER="$3"
-export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/common/software/install/migrated/cudnn/8.2.0/lib64
 
 nnUNet_plan_and_preprocess -t $2 --verify_dataset_integrity
