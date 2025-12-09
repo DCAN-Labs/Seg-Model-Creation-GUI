@@ -22,9 +22,8 @@ sbatch <<EOT
 ## build script here
 
 module load gcc cuda/11.2
-source /common/software/install/migrated/anaconda/anaconda3-2018.12/etc/profile.d/conda.sh
-module load conda
-conda activate /home/support/public/pytorch_1.11.0_agate
+source /projects/standard/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh
+conda activate /projects/standard/faird/shared/code/external/envs/miniconda3/mini3/envs/pytorch_1.11.0
 
 export nnUNet_raw_data_base="$4"
 export nnUNet_preprocessed="$4/nnUNet_preprocessed"
