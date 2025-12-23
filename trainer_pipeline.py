@@ -112,21 +112,69 @@ def get_training_error_path(logs_path, task_number, fold, job_id):
     # Returns the training error path
     return logs_path / f"Train_{fold}_{task_number}_nnUNet-{job_id}.err"
 
-def is_training_ready(out_file):
-    # Helper function to read fold 0 output to make sure initial setup is done
+def get_fold_dir(trained_models_path, task_number, fold):
+    # Returns path to backup training log folder
+    
+    trained_models_path = Path(trained_models_path)
+    return (
+        trained_models_path / "nnUNet" / "3d_fullres" / f"Task{task_number}" / "nnUNetTrainerV2_noMirroring__nnUNetPlansv2.1" / f"fold_{fold}"
+    )
+    
+def get_latest_training_log(fold_dir):
+    # Returns the most recently modified training_log file in the dir
+    if not fold_dir.exists():
+        return None
+
+    logs = []
+    for p in fold_dir.iterdir():
+        if p.is_file() and p.name.startswith("training_log"):
+            logs.append(p)
+
+    if len(logs) == 0:
+        return None
+
+    latest = logs[0]
+    for p in logs[1:]:
+        if p.stat().st_mtime > latest.stat().st_mtime:
+            latest = p
+
+    return latest
+
+def file_has_epoch0(out_file):
+    # Checks for epoch 0
+    if out_file is None:
+        return False
     if not out_file.exists():
         return False
+
     with out_file.open() as f:
         for line in f:
-            if "epoch: 0" in line or "epoch:  0" in line: # If epochs have started, training is ready to continue for other folds
-                print("Preparation complete. Ready to continue training on the rest of the folds.")
+            if "epoch: 0" in line or "epoch:  0" in line:
                 return True
     return False
 
-def wait_fold_0_setup(out_file, err_file):
+def is_training_ready(out_file, trained_models_path, task_number):
+    # Helper function to read fold 0 output to make sure initial setup is done
+    
+    # First check the SLURM output file
+    if file_has_epoch0(out_file):
+        print("Preparation complete. Ready to continue training on the rest of the folds.")
+        return True
+
+    # Check Backup Program Output
+    fold_dir = get_fold_dir(trained_models_path, task_number, 0)
+    latest_log = get_latest_training_log(fold_dir)
+
+    if latest_log is not None and file_has_epoch0(latest_log):
+        print("Preparation complete. Ready to continue training on the rest of the folds.")
+        return True
+
+    return False
+
+def wait_fold_0_setup(out_file, err_file, trained_models_path, task_number):
     # Waits for fold 0 to finish setup before other folds start running
     print_counter = 0
-    while not is_training_ready(out_file): # Continuously reads output file to detect if its ready to continue
+    while not is_training_ready(out_file, trained_models_path, task_number): # Continuously reads output file to detect if its ready to continue
         if err_file.exists(): # If theres an error in the preparation, exit
             with err_file.open() as f:
                 if any("Error" in line for line in f):
@@ -241,7 +289,9 @@ def model_training(args, logs_path, log_file_path, script_dir):
     job_ids[0] = get_job_id_from_squeue(f"{args.task_number}_0_Train_nnUNet")
     wait_fold_0_setup(
         get_training_log_path(logs_path, args.task_number, 0, job_ids[0]),
-        get_training_error_path(logs_path, args.task_number, 0, job_ids[0])
+        get_training_error_path(logs_path, args.task_number, 0, job_ids[0]),
+        args.trained_models_path,
+        args.task_number
     )
     print("Begin training Fold 0")
 
