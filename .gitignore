@@ -167,3 +167,4 @@ cython_debug/
 /scripts/slurm_scripts/*
 !/scripts/slurm_scripts/*.sh
 /scripts/slurm_scripts/*/
+/logs/*/
