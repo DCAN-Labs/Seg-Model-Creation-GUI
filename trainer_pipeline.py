@@ -84,9 +84,12 @@ def check_complete(err_path, fold):
         with open(err_path, 'r') as f:
             lines = f.readlines()
             for line in lines:
-                if "DUE TO TIME LIMIT" in line:
+                if "due to time limit" in line.lower():
                     print(f"Fold {fold} training stopped due to time limit.")
                     return False
+                elif "error" in line.lower():
+                    print(f"Error detected in fold {fold} training log. Will try to continue.")
+                    return False    
     print(f"Fold {fold} Training Complete.")
     return True
 
@@ -247,7 +250,7 @@ def copy_SynthSeg(args):
 
 ### Creating Dataset Json ###
 def create_json(args):
-    print("--- Now Creating Dataset json ---")
+    print("--- Now Creating Dataset JSON ---")
     task_path = Path(args.task_path)
     # Json gets created
     subprocess.run([
