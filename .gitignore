@@ -163,7 +163,7 @@ cython_debug/
 
 
 /automation_presets/*
-/automation_presets_v2/*
+#/automation_presets_v2/*
 /min_maxes/*
 /scripts/slurm_scripts/*
 !/scripts/slurm_scripts/*.sh
