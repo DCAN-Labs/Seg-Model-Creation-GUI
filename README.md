@@ -21,7 +21,27 @@ We made a GUI
 - Properly structured data directories
 - Training and test datasets
 
-## Directory Structure
+## Directory Structure V1
+
+Your data should be organized as shown below prior to running our program:
+
+```
+Project_Root/
+├── nnUNet_raw_data_base/
+│   ├── nnUNet_raw_data/
+│   │   ├── Task000/
+│   │   │   ├── imagesTr/
+│   │   │   ├── imagesTs/
+│   │   │   ├── labelsTr/
+│   │   │   └── labelsTs/
+│   │   ├── Task001/
+│   │   ├── Task002/
+│   │   └── ...
+│   ├── nnUNet_preprocessed/ (created automatically)
+│   └── nnUNet_cropped_data/ (created automatically)
+```
+
+## Directory Structure V2
 
 Your data should be organized as shown below prior to running our program:
 
@@ -54,7 +74,16 @@ Project_Root/
 | **Results Path** | Path where inferred segmentations and plots will be saved |
 | **Trained Models Path** | Path where trained models will be stored |
 
-### Training Arguments
+### Training Arguments V1
+
+| Parameter | Options | Description |
+|-----------|---------|-------------|
+| **Modality** | `t1`, `t2`, `t1t2` | Dataset modality type |
+| **Task Number** | Integer | Unique identifier for your task (must match task path) |
+| **Distribution** | `uniform`, `normal` | Data distribution type |
+| **Number of SynthSeg Images** | Integer | Number of synthetic images for SynthSeg to generate per age group |
+
+### Training Arguments V2
 
 | Parameter | Options | Description |
 |-----------|---------|-------------|
@@ -104,10 +133,11 @@ The GUI provides 8 configurable training steps:
 ## Usage
 (As of now, to run this, you must have access to the faird group on MSI)
 
-1. **Launch the GUI**: Run pyqt_test to open the main UI window
-2. **Configure Paths**: Fill in all required directory paths
-3. **Set Parameters**: Specify modality, task number, distribution, and image count
-4. **Select Steps**: Choose which training steps to execute (default: all selected)
-5. **Execute**: Press Run
+1. **Launch the GUI**: Run:```python trainer_gui.py```to open the main UI window
+2. **Select version**: Either  V1 or V2
+3. **Configure Paths**: Fill in all required directory paths
+4. **Set Parameters**: Specify modality, task number, distribution, and image count
+5. **Select Steps**: Choose which training steps to execute (default: all selected)
+6. **Execute**: Press Run
 
 For questions or issues, please contact the development team: @Emoney and @Kenevan-Carter
