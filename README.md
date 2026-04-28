@@ -4,7 +4,7 @@ A user-friendly interface designed to automate and streamline the process of tra
 
 ## Overview
 
-We made a GUI
+We made a GUI if not spec
 
 **Created by:** @Emoney and @Kenevan-Carter
 
@@ -14,12 +14,14 @@ We made a GUI
 - **Custom Presets**: Save and reuse configurations for different training sessions
 - **Modular Execution**: Toggle individual steps on/off based on your needs
 
-## Requirements
+## Requirements V1
 
 - SynthSeg repository
 - dcan-nn-unet repository
 - Properly structured data directories
 - Training and test datasets
+
+## Requirements V2
 
 ## Directory Structure V1
 
