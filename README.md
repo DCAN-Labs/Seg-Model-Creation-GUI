@@ -2,11 +2,9 @@
 
 A user-friendly interface designed to automate and streamline the process of training deep learning algorithms for brain segmentation using SynthSeg and nnUNet.
 
-## Overview
+## Documentation Overview
 
-We made a GUI if not spec
-
-**Created by:** @Emoney and @Kenevan-Carter
+This documentation explains how to run model training using both Version 1 and Version 2 of the nnUNet workflow. Sections labeled with V1 or V2 apply only to that version. If a section does not specify a version, the instructions apply to both workflows.
 
 ## Features
 
@@ -14,15 +12,14 @@ We made a GUI if not spec
 - **Custom Presets**: Save and reuse configurations for different training sessions
 - **Modular Execution**: Toggle individual steps on/off based on your needs
 
-## Requirements V1
+## Requirements
 
 - SynthSeg repository
-- dcan-nn-unet repository
-- Properly structured data directories
+- dcan-nnUNet repository
+- Properly structured data directories; see Directory Structure V1 and V2
 - Training and test datasets
-
-## Requirements V2
-
+- Access to the faird group on MSI
+  
 ## Directory Structure V1
 
 Your data should be organized as shown below prior to running our program:
@@ -49,18 +46,17 @@ Your data should be organized as shown below prior to running our program:
 
 ```
 Project_Root/
-├── nnUNet_raw_data_base/
-│   ├── nnUNet_raw_data/
-│   │   ├── Task000/
-│   │   │   ├── imagesTr/
-│   │   │   ├── imagesTs/
-│   │   │   ├── labelsTr/
-│   │   │   └── labelsTs/
-│   │   ├── Task001/
-│   │   ├── Task002/
-│   │   └── ...
-│   ├── nnUNet_preprocessed/ (created automatically)
-│   └── nnUNet_cropped_data/ (created automatically)
+├── nnUNet_raw/
+│   ├── Dataset[Task Number]_[DatasetName]                 e.g Dataset644_AnomalousInfant
+│   │   ├── imagesTr/
+│   │   ├── imagesTs/
+│   │   ├── labelsTr/
+│   │   └── labelsTs/
+│   ├── Dataset[Task Number]_[DatasetName]/
+│   ├── Dataset[Task Number]_[DatasetName]/
+│   └── ...
+├── nnUNet_preprocessed/ (created automatically)  ?
+└── nnUNet_results/ (created automatically)  ?
 ```
 
 ## Configuration Parameters
@@ -93,6 +89,8 @@ Project_Root/
 | **Task Number** | Integer | Unique identifier for your task (must match task path) |
 | **Distribution** | `uniform`, `normal` | Data distribution type |
 | **Number of SynthSeg Images** | Integer | Number of synthetic images for SynthSeg to generate per age group |
+| **Dataset Name** | `e.g AnomalousInfant` | Name of training dataset |
+| **Model Type**| `lifespan`, `infant` | Specify age parameter of Dataset | 
 
 ## Training Steps
 
@@ -134,12 +132,15 @@ The GUI provides 8 configurable training steps:
 
 ## Usage
 (As of now, to run this, you must have access to the faird group on MSI)
+1. **Launch Environment**: Run ```source /projects/standard/faird/shared/code/external/envs/miniconda3/load_miniconda3.sh``` and ```conda activate SynthSeg-fixed-perms``` to gain access to the environment variables needed to run this program.
+2. **Launch the GUI**: Run:```python trainer_gui.py```to open the main UI window
+3. **Select version**: Either  V1 or V2
+4. **Configure Paths**: Fill in all required directory paths
+5. **Set Parameters**: Specify modality, task number, distribution, image count etc..
+6. **Select Steps**: Choose which training steps to execute (default: all selected)
+7. **Execute**: Press Run
 
-1. **Launch the GUI**: Run:```python trainer_gui.py```to open the main UI window
-2. **Select version**: Either  V1 or V2
-3. **Configure Paths**: Fill in all required directory paths
-4. **Set Parameters**: Specify modality, task number, distribution, and image count
-5. **Select Steps**: Choose which training steps to execute (default: all selected)
-6. **Execute**: Press Run
+## Canceling Process
+To stop a running process, press the cancel button in the GUI if available. If the process does not stop cleanly, terminate it from the terminal where the GUI was launched.
 
 For questions or issues, please contact the development team: @Emoney and @Kenevan-Carter
