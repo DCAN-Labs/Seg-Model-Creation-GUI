@@ -24,7 +24,7 @@ GRAY_BACKGROUND = "background-color: rgb(137, 137, 137)"
 # region ### WORKER THREAD CLASSES ###
 
 class PipelineWorkerThread(QtCore.QThread):
-    """Thread for running the v1 training pipeline without blocking the GUI"""
+    '''Thread for running the training pipeline without blocking the GUI's functionality. This runs the orinigal nnUnet v1-based pipeline'''
     finished = pyqtSignal()
 
     def __init__(self, dcan_path, task_path, synth_path, raw_path, results_path, trained_path,
@@ -46,7 +46,7 @@ class PipelineWorkerThread(QtCore.QThread):
         self.quit_program = False
 
     def cancel_jobs(self):
-        """Uses active jobs file to cancel all job ids listed"""
+        # Uses active jobs file to cancel all job ids listed
         active_jobs_path = Path(self.script_dir) / "logs" / f"Task{self.task_num}" / "active_jobs.txt"
         if not active_jobs_path.exists():
             return
@@ -59,7 +59,7 @@ class PipelineWorkerThread(QtCore.QThread):
         active_jobs_path.unlink()
 
     def run(self):
-        """Start subprocess and wait for it to finish"""
+        # Start subprocess running the training pipeline and wait for it to finish, then cancel any remaining jobs if the process was stopped manually from the GUI
         pipeline_script = Path(self.script_dir) / "trainer_pipeline.py"
         cmd = [
             "python", str(pipeline_script),
@@ -72,6 +72,8 @@ class PipelineWorkerThread(QtCore.QThread):
         self.processes.append(process)
         process.wait()
         self.cancel_jobs()
+        
+        # If the process finished on its own, do nothing. If it was stopped by the user, print a message. If it ended with an error, print a different message
         if process.returncode == 0:
             pass
         elif not self.quit_program:
@@ -81,7 +83,7 @@ class PipelineWorkerThread(QtCore.QThread):
         self.finished.emit()
 
     def stop_program(self):
-        """Cancel subprocesses when user stops program manually"""
+        # Cancel subprocesses when user stops program manually from the GUI, then set a flag so that when the process finishes it knows it was stopped by the user and doesn't print an error message
         if len(self.processes) > 0:
             self.quit_program = True
             print("Stopping Process...")
@@ -95,7 +97,7 @@ class PipelineWorkerThread(QtCore.QThread):
 
 
 class PipelineWorkerThreadV2(QtCore.QThread):
-    """Thread for running the v2 training pipeline without blocking the GUI"""
+    # Thread for running the training pipeline without blocking the GUI's functionality. This runs the new nnUnet v2-based pipeline, which has some differences in how it handles tasks and datasets so it required a separate thread class
     finished = pyqtSignal()
 
     def __init__(self, dcan_path, task_path, synth_path, raw_path, results_path, trained_path,
@@ -120,7 +122,7 @@ class PipelineWorkerThreadV2(QtCore.QThread):
         self.quit_program = False
 
     def cancel_jobs(self):
-        """Uses active jobs file to cancel all job ids listed"""
+        # Uses active jobs file to cancel all job ids listed
         dataset_folder = f"Dataset{self.task_num}_{self.dataset_name}"
         active_jobs_path = Path(self.script_dir) / "logs" / dataset_folder / "active_jobs.txt"
         if not active_jobs_path.exists():
@@ -134,7 +136,7 @@ class PipelineWorkerThreadV2(QtCore.QThread):
         active_jobs_path.unlink()
 
     def run(self):
-        """Start subprocess and wait for it to finish"""
+        # Start subprocess running the training pipeline and wait for it to finish, then cancel any remaining jobs if the process was stopped manually from the GUI
         pipeline_script = Path(self.script_dir) / "trainer_pipeline_v2.py"
         cmd = [
             "python", str(pipeline_script),
@@ -148,6 +150,7 @@ class PipelineWorkerThreadV2(QtCore.QThread):
         self.processes.append(process)
         process.wait()
         self.cancel_jobs()
+        # If the process finished on its own, do nothing. If it was stopped by the user, print a message. If it ended with an error, print a different message
         if process.returncode == 0:
             pass
         elif not self.quit_program:
@@ -157,7 +160,7 @@ class PipelineWorkerThreadV2(QtCore.QThread):
         self.finished.emit()
 
     def stop_program(self):
-        """Cancel subprocesses when user stops program manually"""
+        # Cancel subprocesses when user stops program manually from the GUI, then set a flag so that when the process finishes it knows it was stopped by the user and doesn't print an error message
         if len(self.processes) > 0:
             self.quit_program = True
             print("Stopping Process...")
@@ -175,7 +178,7 @@ class PipelineWorkerThreadV2(QtCore.QThread):
 # region ### MAIN WINDOW CLASS ###
 
 class Window(QtWidgets.QMainWindow):
-    """Main window — works for both v1 and v2 depending on the pipeline_version passed in."""
+    '''Main window class for the training pipeline GUI. This class handles both the original nnUnet v1-based pipeline and the new nnUnet v2-based pipeline'''
 
     def __init__(self, pipeline_version=1):
         super().__init__()
@@ -233,14 +236,13 @@ class Window(QtWidgets.QMainWindow):
         self.ui.button_browse_3.clicked.connect(lambda: self.browse_path('task_path', "/"))
         self.ui.button_browse_4.clicked.connect(lambda: self.browse_path('raw_data_base_path', "/"))
 
-    # ------------------------------------------------------------------
-    # Preset helpers
-    # ------------------------------------------------------------------
+    ## Preset helpers ##
 
     def _initialize_preset_comboboxes(self):
-        """Load and populate preset comboboxes from the version-appropriate folder"""
+        # Load and populate preset comboboxes from the version-appropriate folder
         presets_dir = self.script_dir / self.presets_dir_name
 
+        # Populate preset selection and removal comboboxes with presets from the appropriate folder based on the selected pipeline version, in alphabetical order
         for file in (presets_dir.iterdir() if presets_dir.exists() else []):
             if file.suffix == PRESET_EXTENSION:
                 name = file.stem
@@ -248,7 +250,7 @@ class Window(QtWidgets.QMainWindow):
                     self._find_alphabetical_index(self.ui.comboBox_preset, name), name)
                 self.ui.comboBox_remove_preset.insertItem(
                     self._find_alphabetical_index(self.ui.comboBox_remove_preset, name), name)
-
+        # If there are no presets, set combobox to non-editable and show "No Presets" placeholder. If there are presets, set up combobox to be searchable and show "Select Preset" placeholder
         if self.ui.comboBox_preset.count() < 1:
             self._setup_empty_combobox(self.ui.comboBox_preset, '-- No Presets --')
             self._setup_empty_combobox(self.ui.comboBox_remove_preset, '-- No Presets --')
@@ -257,12 +259,14 @@ class Window(QtWidgets.QMainWindow):
             self._setup_searchable_combobox(self.ui.comboBox_remove_preset, '-- Select Preset --')
 
     def _find_alphabetical_index(self, combo_box, item):
+        # Helper function for inserting items into the preset comboboxes in alphabetical order
         items = [combo_box.itemText(i) for i in range(combo_box.count())]
         items.append(item)
         items.sort(key=str.upper)
         return items.index(item)
 
     def _setup_searchable_combobox(self, combo_box, placeholder):
+        # Formats a combobox to be searchable with a placeholder
         combo_box.setEditable(True)
         combo_box.lineEdit().setPlaceholderText(placeholder)
         combo_box.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
@@ -270,16 +274,16 @@ class Window(QtWidgets.QMainWindow):
         combo_box.setCurrentIndex(-1)
 
     def _setup_empty_combobox(self, combo_box, placeholder):
+        # Formats a combobox to show a placeholder and not be editable when there are no items to show
         combo_box.setEditable(False)
         combo_box.setPlaceholderText(placeholder)
         combo_box.setStyleSheet(GRAY_BACKGROUND)
 
-    # ------------------------------------------------------------------
-    # Validation
-    # ------------------------------------------------------------------
+    ## Validation ##
 
     def _validate_inputs(self):
-        """Validate all inputs; v2 adds dataset_name and model_type checks"""
+        # Validate all inputs; v2 adds dataset_name and model_type checks. Just making sure all inputs make sense before starting the pipeline
+        
         path_fields = ['dcan_path', 'synth_path', 'task_path', 'raw_data_base_path',
                        'results_path', 'trained_models_path']
         paths_valid = all(
@@ -296,7 +300,7 @@ class Window(QtWidgets.QMainWindow):
 
         synth_amt_valid = self.input_fields['synth_img_amt'].text().strip().isdigit()
 
-        # Task-path / task-number consistency differs between v1 and v2
+        # Making sure that the task folder name matches the task number (and dataset name for v2)
         tasks_match = True
         if task_number_valid and Path(self.input_fields['task_path'].text().strip()).exists():
             task_path = Path(self.input_fields['task_path'].text().strip())
@@ -318,22 +322,24 @@ class Window(QtWidgets.QMainWindow):
         return all([paths_valid, modality_valid, task_number_valid,
                     distribution_valid, synth_amt_valid, tasks_match, v2_valid])
 
-    # ------------------------------------------------------------------
-    # Running the pipeline
-    # ------------------------------------------------------------------
+    ## Running the pipeline ##
 
     def _get_step_selections(self):
+        # Encode which steps the user has selected to run as a list of 1s and 0s, which will be passed to the pipeline and decoded there to determine which steps to run
         selections = []
         for checkbox in self.ui.checkBoxes:
             selections.append(1 if checkbox.isChecked() else 0)
         return str(selections)
 
     def _update_status(self, message):
+        # Update the status message shown in the UI
         print(message)
         self.ui.menuiuhwuaibfa.setTitle(message)
 
     def run_program(self):
-        """Handle run / cancel button click"""
+        #Handles run / cancel button click, starting the pipeline in a new thread if not currently running, or stopping the pipeline if it is currently running
+        
+        # If program is not currently running, validate inputs and start the pipeline in a new thread
         if not self.is_running:
             if any(w.text() == "" for w in self.input_fields.values()):
                 self._update_status("Please fill out all input fields")
@@ -382,21 +388,23 @@ class Window(QtWidgets.QMainWindow):
             self.worker_thread.start()
             self.is_running = True
             self.ui.pushButton.setText('Cancel')
-
+        # If program is currently running, stop the pipeline and any active jobs
         else:
             self._update_status("Program Stopped")
             self.worker_thread.stop_program()
 
     def on_pipeline_finished(self):
+        #Pipeline finished behavior
         self.is_running = False
         self.step_selections = []
         self.ui.pushButton.setText('Run')
 
-    # ------------------------------------------------------------------
-    # UI helpers
-    # ------------------------------------------------------------------
+
+    ## UI helpers ##
 
     def browse_path(self, field_name, default_path):
+        #Some path input fields have a browse button that opens a file explorer to select the path instead of typing it out, this handles those button clicks
+        
         field_widget = self.input_fields[field_name]
         current_path = field_widget.text() or default_path
         selected_path = QFileDialog.getExistingDirectory(self, "Select Directory", current_path)
@@ -404,11 +412,13 @@ class Window(QtWidgets.QMainWindow):
             field_widget.setText(str(selected_path))
 
     def toggle_all_checkboxes(self):
+        # If any checkbox is unchecked, check them all. If they are all checked, uncheck them all
         all_checked = all(cb.isChecked() for cb in self.ui.checkBoxes)
         for cb in self.ui.checkBoxes:
             cb.setChecked(not all_checked)
 
     def populate_inputs(self):
+        # Populate input fields with values from the selected preset, if there is one. This looks for a preset file with the same name as the selected preset in the appropriate presets folder for the pipeline version, and populates fields based on the key=value pairs listed in that file
         if self.ui.comboBox_preset.currentIndex() < 0:
             return
         preset_name = self.ui.comboBox_preset.currentText().strip()
@@ -428,6 +438,7 @@ class Window(QtWidgets.QMainWindow):
         self._update_status("Preset Loaded")
 
     def save_preset(self):
+        # Save the current input field values as a preset with the name given in the preset name field. This creates a file in the appropriate presets folder for the pipeline version with key=value pairs for each input field
         preset_name = self.ui.line_save_preset.text().strip()
         if not preset_name:
             return
@@ -439,6 +450,7 @@ class Window(QtWidgets.QMainWindow):
         presets_dir.mkdir(parents=True, exist_ok=True)
         preset_path = presets_dir / f"{preset_name}{PRESET_EXTENSION}"
 
+        # If the preset already exists and the overwrite checkbox is checked, delete the existing preset file and remove it from the comboboxes so that it can be replaced with the new one. If the preset already exists and the overwrite checkbox is not checked, show an error message and don't save
         if self.ui.check_overwrite.isChecked() and preset_path.exists():
             preset_path.unlink()
             self.ui.comboBox_preset.removeItem(self.ui.comboBox_preset.findText(preset_name))
@@ -452,6 +464,7 @@ class Window(QtWidgets.QMainWindow):
             for key, widget in self.input_fields.items():
                 f.write(f"{key}={widget.text().strip()}\n")
 
+        # Select preset and remove preset combobox visual updates
         self.ui.comboBox_preset.setStyleSheet("")
         self.ui.comboBox_preset.insertItem(
             self._find_alphabetical_index(self.ui.comboBox_preset, preset_name), preset_name)
@@ -474,6 +487,7 @@ class Window(QtWidgets.QMainWindow):
         self._update_status("Preset Saved")
 
     def remove_preset(self):
+        # Remove the preset file corresponding to the selected preset in the remove preset combobox
         if self.ui.comboBox_remove_preset.currentIndex() < 0:
             return
         preset_name = self.ui.comboBox_remove_preset.currentText().strip()
@@ -486,7 +500,9 @@ class Window(QtWidgets.QMainWindow):
         if not dialog.exec():
             return
 
-        preset_path.unlink()
+        preset_path.unlink() # Delete the preset file
+        
+        # Update preset selection and removal comboboxes to remove the deleted preset
         current_selection = self.ui.comboBox_preset.currentText().strip()
         if current_selection == preset_name:
             self.ui.comboBox_preset.setCurrentIndex(-1)
@@ -506,14 +522,17 @@ class Window(QtWidgets.QMainWindow):
         self._update_status("Preset Removed")
 
     def clear_inputs(self):
+        # Clear all input fields
         for widget in self.input_fields.values():
             widget.clear()
 
     def closeEvent(self, event):
+        # Override the default close behavior to show a confirmation dialog if the user tries to close the window while the pipeline is running, since closing will stop the pipeline and any active jobs
         print("CLOSING")
-        if not self.is_running:
+        if not self.is_running: # If program is not running, just close the window
             event.accept()
             return
+        
         reply = QMessageBox.question(
             self, 'Close Confirmation',
             "A program is currently running. Quitting now will cause it to stop at its current step, "
@@ -521,10 +540,10 @@ class Window(QtWidgets.QMainWindow):
             "Are you sure you want to quit?",
             QMessageBox.Yes | QMessageBox.No, QMessageBox.No
         )
-        if reply == QMessageBox.Yes:
+        if reply == QMessageBox.Yes: # If user confirms they want to quit, stop the pipeline and close the window
             self.run_program()
             event.accept()
-        else:
+        else: # If user cancels quitting, ignore the close event and keep the window open
             event.ignore()
 
 # endregion
@@ -533,6 +552,7 @@ class Window(QtWidgets.QMainWindow):
 # region ### LOGIN WINDOW CLASS ###
 
 class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
+    ''''Login window class, which is the first thing the user sees when they open the program. This just allows the user to select which version of the pipeline they want to run (v1 or v2), and then opens the main window with the appropriate pipeline version when they click the "Launch UI" button'''
     def __init__(self):
         super().__init__()
         self.setupUi(self)
@@ -542,7 +562,7 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
         # Populate combobox — show presets from whichever version is currently selected
         self._load_presets_for_version(self._selected_version())
 
-        # Update the preset list whenever the version radio changes
+        # Update the preset list whenever the version radio changes, since v1 and v2 have different presets folders
         self.radio_v1.toggled.connect(self._on_version_toggled)
         self.radio_v2.toggled.connect(self._on_version_toggled)
 
@@ -550,15 +570,20 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
         self.button_launch_ui.clicked.connect(self.launch_main_ui)
 
     def _selected_version(self):
-        return 2 if self.radio_v2.isChecked() else 1
+        # Helper function to determine which pipeline version is currently selected based on the radio buttons
+        if (self.radio_v1.isChecked()):
+            return 1
+        else:
+            return 2
 
     def _on_version_toggled(self):
-        """Reload preset combobox when the user switches version"""
+        # Reload preset combobox to reflect the presets available for the currently selected pipeline version
         self.comboBox.clear()
         self.comboBox.setCurrentIndex(-1)
         self._load_presets_for_version(self._selected_version())
 
     def _load_presets_for_version(self, version):
+        # Load presets from the appropriate folder based on the selected pipeline version and populate the preset selection combobox, in alphabetical order
         presets_dir_name = PRESETS_DIR_V2 if version == 2 else PRESETS_DIR_V1
         presets_dir = self.script_dir / presets_dir_name
 
@@ -567,6 +592,7 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
                 name = file.stem
                 self.comboBox.insertItem(self._find_alphabetical_index(self.comboBox, name), name)
 
+        # If there are no presets, set combobox to non-editable and show "No Presets" placeholder. If there are presets, set up combobox to be searchable and show "Select Preset" placeholder
         if self.comboBox.count() < 1:
             self.comboBox.setEditable(False)
             self.comboBox.setPlaceholderText('-- No Presets --')
@@ -580,13 +606,14 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
         self.comboBox.setCurrentIndex(-1)
 
     def _find_alphabetical_index(self, combo_box, item):
+        # Helper function for inserting items into the preset combobox in alphabetical order
         items = [combo_box.itemText(i) for i in range(combo_box.count())]
         items.append(item)
         items.sort(key=str.upper)
         return items.index(item)
 
     def launch_main_ui(self):
-        """Open the main window with the correct pipeline version"""
+        # Open the main window with the correct pipeline version
         selected_preset = self.comboBox.currentText().strip()
         if selected_preset and self.comboBox.findText(selected_preset) == -1:
             return
@@ -595,6 +622,7 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
         self.main_window = Window(pipeline_version=version)
         self.main_window.show()
 
+        # If a preset was selected on the login screen, automatically populate the main window input fields with that preset's values when it launches
         if selected_preset:
             idx = self.main_window.ui.comboBox_preset.findText(selected_preset)
             self.main_window.ui.comboBox_preset.setCurrentIndex(idx)
@@ -607,6 +635,7 @@ class LoginWindow(QtWidgets.QMainWindow, Ui_LoginWindow):
 
 # region ### MAIN ###
 def main():
+    # Create and show the login window, which will then open the main window when the user clicks the "Launch UI" button
     app = QtWidgets.QApplication(sys.argv)
     app.setStyle('Windows')
     login_window = LoginWindow()

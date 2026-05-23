@@ -125,7 +125,7 @@ class Ui_MainWindowV2(object):
         self.line_synth_img_amt.setObjectName("line_synth_img_amt")
         self.gridLayout.addWidget(self.line_synth_img_amt, 19, 0, 1, 1, QtCore.Qt.AlignTop)
 
-        # --- V2-only fields ---
+        # --- V2-only ---
 
         # dataset name  (e.g. "AnomalousInfant" -> becomes Dataset645_AnomalousInfant)
         self.label_dataset_name = QtWidgets.QLabel(self.centralwidget)
@@ -147,7 +147,7 @@ class Ui_MainWindowV2(object):
         self.line_model_type.setObjectName("line_model_type")
         self.gridLayout.addWidget(self.line_model_type, 23, 0, 1, 1)
 
-        # --- Right-column controls (presets, checkboxes, overwrite) ---
+        # --- Right-column controls ---
 
         # overwrite label + checkbox
         self.label_overwrite = QtWidgets.QLabel(self.centralwidget)
@@ -165,7 +165,7 @@ class Ui_MainWindowV2(object):
         self.gridLayout.addWidget(self.line_save_preset, 1, 2, 1, 2)
         self.line_save_preset.setPlaceholderText("Create Preset Name")
 
-        # remove preset combobox
+        # remove preset dropdown
         self.comboBox_remove_preset = ComboBox(self.centralwidget)
         self.comboBox_remove_preset.setObjectName("comboBox_remove_preset")
         self.comboBox_remove_preset.setFixedSize(200, 30)
