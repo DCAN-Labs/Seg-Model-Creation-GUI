@@ -319,22 +319,47 @@ def model_training(args, logs_path, log_file_path, script_dir):
     print("--- Training Complete ---")
 
 ### Create Inferred Segmentations and Plots ###
-def inference(args, logs_path, log_file_path, script_dir):
+def inference(args, logs_path):
     # Created inferred segmentations
     print("--- Starting Inference ---")
     inferred_dir = Path(args.results_path) / f"{args.task_number}_infer"
     inferred_dir.mkdir(parents=True, exist_ok=True)
-    os.chdir(logs_path)
-    time.sleep(3)
-    submit_job(["sbatch", "-W", "infer_agate.sh", "faird", args.task_number, args.raw_data_base_path, args.trained_models_path], log_file_path)
-    job_id = get_job_id_from_squeue(f"{args.task_number}_infer")
-    wait_for_job_to_finish(job_id, -1)
+    submitter_parent_image_dir = Path(args.raw_data_base_path) / "nnUNet_raw_data" / f"Task{args.task_number}" / "imagesTs"
+    # can only process 2000 .nii.gz files max
+    if len(list(submitter_parent_image_dir.glob("*.nii.gz"))) > 2000:
+        print("Error: Too many .nii.gz files to process. Please limit to 2000.")
+        return
+    all_files = list(submitter_parent_image_dir.glob("*.nii.gz"))
+    batch_size = 100
+    last_job_id = None
+    for batch_index, batch_start in enumerate(range(0, len(all_files), batch_size)):
+        batch_files = all_files[batch_start:batch_start + batch_size]
+        # create a subdirectory for this batch
+        batch_name = f"batch_{batch_index:04d}"
+        image_dir = inferred_dir / batch_name
+        image_dir.mkdir(parents=True, exist_ok=True)
+        # create a log directory for this batch
+        indv_log_dir = logs_path / "inference" / batch_name
+        indv_log_dir.mkdir(parents=True, exist_ok=True)
+        # copy all files in this batch to the subdirectory
+        for file in batch_files:
+            shutil.copy(file, image_dir)
+        # submit one inference job for this batch
+        print(f"Processing batch {batch_index} ({len(batch_files)} files)")
+        os.chdir(logs_path)
+        time.sleep(3)
+        submit_job(["sbatch", "-W", "infer_agate.sh", "faird", args.task_number, args.raw_data_base_path, args.trained_models_path, str(image_dir)], indv_log_dir)
+        last_job_id = get_job_id_from_squeue(f"{args.task_number}_infer")
+    wait_for_job_to_finish(last_job_id, -1)
     print("--- Inference Complete ---")
 
     # Create dice plots
     print("--- Creating Plots ---")
     results_dir = Path(args.results_path) / f"{args.task_number}_results"
     results_dir.mkdir(parents=True, exist_ok=True)
+    # clear batch directories from the inferred directory
+    for batch_dir in inferred_dir.glob("batch_*"):
+        shutil.rmtree(batch_dir)
     paper_dir = Path(args.synth_path) / "SynthSeg" / "dcan" / "paper"
     os.chdir(paper_dir)
     subprocess.run(["python", "evaluate_results.py",

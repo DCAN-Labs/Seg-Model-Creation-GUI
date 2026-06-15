@@ -26,5 +26,5 @@ export RESULTS_FOLDER="$4"
 
 
 
-nnUNet_predict -i $3/nnUNet_raw_data/Task$2/imagesTs -o /projects/standard/faird/shared/data/nnUNet_lundq163/$2_infer/ -t $2 -tr nnUNetTrainerV2_noMirroring -m 3d_fullres --disable_tta
+nnUNet_predict -i $5 -o /projects/standard/faird/shared/data/nnUNet_lundq163/$2_infer/ -t $2 -tr nnUNetTrainerV2_noMirroring -m 3d_fullres --disable_tta
 EOT
