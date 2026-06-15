@@ -3,10 +3,10 @@ sbatch <<EOT
 #!/bin/sh
 
 #SBATCH --job-name=$2_infer 
-#SBATCH --mem=64g       
-#SBATCH --time=8:00:00          # (HH:MM:SS)
+#SBATCH --mem=256g       
+#SBATCH --time=24:00:00          # (HH:MM:SS)
 
-#SBATCH -p a100-4     
+#SBATCH -p msigpu    
 #SBATCH --gres=gpu:a100:1
 #SBATCH --ntasks=1
 #SBATCH -e infer_$2-%j.err
