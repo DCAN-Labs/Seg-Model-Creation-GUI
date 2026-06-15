@@ -5,7 +5,7 @@
 
 #SBATCH --job-name=SynthSeg_image_generation
 #SBATCH --time=96:00:00          # total run time limit (HH:MM:SS)
-#SBATCH --mem-per-cpu=32GB
+#SBATCH --mem-per-cpu=64GB
 #SBATCH --cpus-per-task=4
 #SBATCH -A faird
 #SBATCH --tmp=20gb
